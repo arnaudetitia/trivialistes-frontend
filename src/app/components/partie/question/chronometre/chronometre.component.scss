@@ -1,0 +1,23 @@
+.chronometre-container {
+  width: 100%;
+  height: 96%;
+
+  border: 20px solid black;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.chrono-fill {
+  background-color: #00ff00;
+  width: 100%;
+}
+
+.chrono-fill.critique {
+  background-color: orange;
+}
+
+.chrono-fill.last-seconds {
+  background-color: red;
+}

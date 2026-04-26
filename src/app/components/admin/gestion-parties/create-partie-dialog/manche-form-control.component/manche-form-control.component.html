@@ -1,0 +1,32 @@
+<div class="manche-control-form-container champ-manche">
+  <form [formGroup]="mancheForm">
+    <div
+      class="question-form-container"
+      *ngFor="let questionFormFieldName of formNameList; let i = index"
+    >
+      <mat-form-field>
+        <mat-label>Catégorie {{ 2 * mancheIndex + i - 1 }}</mat-label>
+        <mat-select
+          [formControlName]="questionFormFieldName[0]"
+          (selectionChange)="onCategorieSelected($event, i)"
+        >
+          <mat-option *ngFor="let categorie of listeCategories" [value]="categorie.id">{{
+            categorie.libelleCategorie
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Question {{ 2 * mancheIndex + i - 1 }}</mat-label>
+        <mat-select
+          [formControlName]="questionFormFieldName[1]"
+          (selectionChange)="onQuestionSelected($event, i)"
+        >
+          <mat-option *ngFor="let question of questionsLists()[i]" [value]="question.id">{{
+            question.question
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </form>
+  <div></div>
+</div>

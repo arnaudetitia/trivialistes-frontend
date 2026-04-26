@@ -1,0 +1,14 @@
+.partie-container {
+  .champ-equipe {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    margin-top: 2vh;
+    margin-left: 25vw;
+    margin-bottom: 0;
+
+    width: 50vw;
+  }
+}

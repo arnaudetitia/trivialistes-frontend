@@ -1,0 +1,5 @@
+<div class="choix-catégorie-container" *ngIf="showCategories">
+  <div class="categorie-option" *ngFor="let index of [0, 1]" (click)="jouerQuestion(index)">
+    {{ manche[index].categorie }}
+  </div>
+</div>

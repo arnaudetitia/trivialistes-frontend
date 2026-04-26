@@ -1,0 +1,21 @@
+.manche-control-form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+
+  padding: 10px;
+  margin-bottom: 10px;
+
+  .question-form-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+
+    mat-form-field:last-of-type {
+      margin-left: 5px;
+
+      width: 80%;
+    }
+  }
+}

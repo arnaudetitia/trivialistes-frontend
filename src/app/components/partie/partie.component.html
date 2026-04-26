@@ -1,0 +1,20 @@
+<div class="partie-container" *ngIf="manches$ | async as manches">
+  <div class="champ-equipe" *ngIf="etatPartie === 'CHOIX_CATEGORIE'">
+    L'équipe {{ equipeEnJeu }} choisit son thème
+  </div>
+  <div class="champ-equipe" *ngIf="etatPartie === 'QUESTION_1' || etatPartie === 'QUESTION_2'">
+    C'est au tour de l'équipe {{ equipeEnJeu }}
+  </div>
+  <choix-categorie
+    *ngIf="etatPartie === 'CHOIX_CATEGORIE'"
+    [manche]="manches[indexManche]"
+    (onCategorieSelected)="showSelectedQuestion(manches, $event)"
+  ></choix-categorie>
+  <question
+    *ngIf="etatPartie === 'QUESTION_1' || etatPartie === 'QUESTION_2'"
+    [questionSet]="currentQuestion"
+    [musiqueSet]="musiques[indexManche]"
+    [mortSubite]="mortSubiteActivated"
+  ></question>
+  <scores *ngIf="etatPartie === 'SCORES'"></scores>
+</div>

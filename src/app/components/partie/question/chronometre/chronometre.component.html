@@ -1,0 +1,11 @@
+<div class="chronometre-container">
+  <div
+    class="chrono-fill"
+    *ngIf="tempsRestant > 0"
+    [style.height.%]="(100 * tempsRestant) / tempsTotal"
+    [ngClass]="{
+      critique: tempsRestant > 5 && tempsRestant <= 20,
+      'last-seconds': tempsRestant <= 5,
+    }"
+  ></div>
+</div>

@@ -1,0 +1,25 @@
+.homepage-container {
+  height: 100vh;
+  width: 100vw;
+  padding: 0;
+
+  background-color: lightgray;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .btn-primary {
+    width: 40vw;
+    border-width: 5px;
+    border-color: black;
+
+    font-size: 50px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  button:first-of-type {
+    margin-bottom: 15px;
+  }
+}

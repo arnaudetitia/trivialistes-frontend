@@ -1,0 +1,30 @@
+<h2 mat-dialog-title>Lancer une partie</h2>
+<mat-dialog-content>
+  <form [formGroup]="partieForm">
+    <div class="equipes-layout">
+      <mat-form-field appearance="outline">
+        <mat-label> Équipe A</mat-label>
+        <input matInput formControlName="equipeA" />
+        <mat-hint>Cette équipe choisira sa catégorie premier</mat-hint>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label> Équipe B</mat-label>
+        <input matInput formControlName="equipeB" />
+      </mat-form-field>
+    </div>
+    <mat-form-field>
+      <mat-label> Partie à jouer : </mat-label>
+      <mat-select formControlName="idPartie">
+        <mat-option *ngFor="let partie of partieDescriptions" [value]="partie.id">{{
+          partie.nomPartie
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button class="btn btn-cancel" mat-dialog-close>Annuler</button>
+  <button class="btn btn-primary" (click)="lancerPartie()" [disabled]="partieForm.invalid">
+    Lancer la partie
+  </button>
+</mat-dialog-actions>

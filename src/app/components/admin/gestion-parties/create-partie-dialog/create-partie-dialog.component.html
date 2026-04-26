@@ -1,0 +1,31 @@
+<h2 mat-dialog-title>Créer une nouvelle partie</h2>
+<mat-dialog-content
+  *ngIf="{ allCategories: allCategories$ | async, mortSubites: mortSubites$ | async } as data"
+>
+  <form [formGroup]="partieForm">
+    <mat-form-field>
+      <mat-label>Nom de la partie</mat-label>
+      <input matInput formControlName="nomPartie" />
+    </mat-form-field>
+    <manche-form-control
+      *ngFor="let formName of mancheFormNames; let i = index"
+      [listeCategories]="data.allCategories || []"
+      [formControlName]="formName"
+      [mancheIndex]="i + 1"
+    ></manche-form-control>
+    <mat-form-field class="champ-manche mort-subite">
+      <mat-label>Mort Subite</mat-label>
+      <mat-select formControlName="mortSubite">
+        <mat-option *ngFor="let ms of data.mortSubites" [value]="ms.id">{{
+          ms.question
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button class="btn btn-cancel" mat-dialog-close>Annuler</button>
+  <button class="btn btn-primary" (click)="createPartie()" [disabled]="partieForm.invalid">
+    Créér la partie
+  </button>
+</mat-dialog-actions>

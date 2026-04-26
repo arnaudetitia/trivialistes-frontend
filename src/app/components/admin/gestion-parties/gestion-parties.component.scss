@@ -1,0 +1,81 @@
+@import '../../../../assets/palette.scss';
+
+.gestion-partie-container {
+  display: flex;
+  flex-direction: column;
+
+  height: 100vh;
+  width: 100vw;
+  padding: 3vh;
+
+  background-color: lightgray;
+  box-sizing: border-box;
+
+  button {
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+    width: 15vw;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    mat-icon {
+      font-weight: bold;
+      margin-right: 10px;
+    }
+  }
+
+  .table-wrapper {
+    flex: 1;
+    overflow: auto;
+    background: white;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    th {
+      font-weight: bold;
+    }
+
+    .mat-column-nom {
+      min-width: 150px;
+    }
+
+    .mat-column-manche1,
+    .mat-column-manche2,
+    .mat-column-manche3,
+    .mat-column-manche4,
+    .mat-column-manche5,
+    .mat-column-manche6,
+    .mat-column-mortSubite {
+      min-width: 300px;
+    }
+
+    .td {
+      height: 100px;
+    }
+
+    .manche-cell-container {
+      display: flex;
+      flex-direction: column;
+
+      span {
+        height: 49px;
+      }
+
+      .badge-categorie {
+        margin-right: 5px;
+        padding: 2px;
+        background-color: $couleur-champ;
+        color: white;
+      }
+
+      .separator {
+        width: 100%;
+        height: 2px;
+        background-color: lightgray;
+        margin-bottom: 2px;
+      }
+    }
+  }
+}

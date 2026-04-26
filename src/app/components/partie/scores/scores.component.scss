@@ -1,0 +1,63 @@
+@import '../../../../assets/palette.scss';
+
+.scores-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .table-wrapper {
+    width: 90vw;
+    padding-top: 10vh;
+    table {
+      th,
+      td {
+        padding: 2vh;
+        border: 5px solid black;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 50px;
+        font-weight: 650;
+        text-align: center;
+
+        .result-manche-container {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          span {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-left: 10px;
+
+            background-color: orange;
+            font-size: 40px;
+            color: white;
+          }
+        }
+      }
+
+      .gagnant-manche {
+        background-color: $couleur-champ;
+        color: white;
+      }
+
+      tr:nth-of-type(7) {
+        .gagnant-manche {
+          background-color: red;
+        }
+      }
+    }
+  }
+
+  .champ-resultat {
+    margin-top: 10vh;
+    padding: 2vh;
+  }
+
+  .egalite {
+    background-color: red;
+  }
+}

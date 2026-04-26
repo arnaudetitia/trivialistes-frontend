@@ -1,0 +1,49 @@
+/* You can add global styles to this file, and also import other style files */
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import 'assets/palette.scss';
+
+.champ-reponse,
+.champ-question,
+.champ-equipe,
+.champ-resultat,
+.champ-manche,
+.categorie-option {
+  background-color: $couleur-champ;
+  color: white;
+  border: 5px solid black;
+
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 2vw;
+  font-weight: 650;
+}
+
+.champ-question.mort-subite,
+.champ-reponse.mort-subite,
+.champ-manche.mort-subite {
+  background-color: $couleur-mort-subite;
+}
+
+.champ-reponse {
+  transition:
+    background-color 0.5s linear,
+    color 0.5s linear;
+}
+
+.champ-question {
+  transition:
+    background-color 1.5s linear,
+    color 1.5s linear;
+}
+
+.show-reponse,
+.show-question {
+  background-color: white !important;
+  color: $couleur-champ !important;
+}
+
+.show-reponse.mort-subite,
+.show-question.mort-subite {
+  background-color: white !important;
+  color: $couleur-mort-subite !important;
+}

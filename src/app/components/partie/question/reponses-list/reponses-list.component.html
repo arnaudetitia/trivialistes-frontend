@@ -1,0 +1,15 @@
+<div class="reponse-list-container">
+  <mat-grid-list cols="2" gutterSize="3vh" rowHeight="12vh">
+    <mat-grid-tile
+      class="champ-reponse"
+      *ngFor="let reponse of reponsesList; let i = index"
+      [ngClass]="{
+        'show-reponse': reponseDisplay.get(reponse),
+        'reponse-donnee': reponseDonnee.get(reponse),
+        'mort-subite': mortSubite,
+      }"
+      (click)="revealReponses(reponse)"
+      >{{ reponseDisplay.get(reponse) ? reponse : i + 1 }}</mat-grid-tile
+    >
+  </mat-grid-list>
+</div>

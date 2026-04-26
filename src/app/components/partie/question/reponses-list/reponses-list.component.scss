@@ -1,0 +1,12 @@
+.reponse-list-container {
+  padding-left: 5vh;
+  padding-right: 5vh;
+
+  .champ-reponse:not(.show-reponse) {
+    cursor: pointer;
+  }
+
+  .reponse-donnee {
+    border: 10px solid #00ff00;
+  }
+}

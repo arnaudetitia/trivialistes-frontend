@@ -1,0 +1,34 @@
+.question-container {
+  .champ-question {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin: 5vh;
+    margin-top: 3vh;
+    margin-bottom: 0;
+
+    cursor: pointer;
+  }
+
+  .interactive-container {
+    display: flex;
+    align-items: stretch;
+    padding-top: 5vh;
+
+    width: 100%;
+    height: 80vh;
+
+    reponses-list {
+      flex: 0 0 88vw;
+    }
+
+    reponses-list.admin-display {
+      flex: 0 0 100vw;
+    }
+
+    chronometre {
+      flex: 0 0 9vw;
+    }
+  }
+}
