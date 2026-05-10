@@ -4,12 +4,12 @@
       class="champ-reponse"
       *ngFor="let reponse of reponsesList; let i = index"
       [ngClass]="{
-        'show-reponse': reponseDisplay.get(reponse),
+        'show-reponse': reponseDisplay.get(reponse) || admin,
         'reponse-donnee': reponseDonnee.get(reponse),
         'mort-subite': mortSubite,
       }"
       (click)="revealReponses(reponse)"
-      >{{ reponseDisplay.get(reponse) ? reponse : i + 1 }}</mat-grid-tile
+      >{{ reponseDisplay.get(reponse) || admin ? reponse : i + 1 }}</mat-grid-tile
     >
   </mat-grid-list>
 </div>

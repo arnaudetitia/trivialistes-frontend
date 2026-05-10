@@ -49,6 +49,7 @@ export class QuestionComponent {
   ) {}
 
   ngOnInit() {
+    this.questionShown = this.admin;
     this.partieOrchestrator.resetQuestionMortSubite$
       .pipe(
         tap(() => {
