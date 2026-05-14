@@ -17,122 +17,125 @@
             <span
               ><span class="badge-categorie">{{ partie.listeQuestions[0].categorie }}</span
               >{{ partie.listeQuestions[0].question }}</span
-            >
-            <div class="separator"></div>
-            <span
-              ><span class="badge-categorie">{{ partie.listeQuestions[1].categorie }}</span
-              >{{ partie.listeQuestions[1].question }}</span
-            >
-          </div>
-        </td>
-      </ng-container>
+              >
+              <div class="separator"></div>
+              <span
+                ><span class="badge-categorie">{{ partie.listeQuestions[1].categorie }}</span
+                >{{ partie.listeQuestions[1].question }}</span
+                >
+              </div>
+            </td>
+          </ng-container>
 
-      <ng-container matColumnDef="manche2">
-        <th mat-header-cell *matHeaderCellDef>Manche 2</th>
-        <td mat-cell *matCellDef="let partie">
-          <div class="manche-cell-container">
-            <span
-              ><span class="badge-categorie">{{ partie.listeQuestions[2].categorie }}</span
-              >{{ partie.listeQuestions[2].question }}</span
-            >
-            <div class="separator"></div>
-            <span
-              ><span class="badge-categorie">{{ partie.listeQuestions[3].categorie }}</span
-              >{{ partie.listeQuestions[3].question }}</span
-            >
-          </div>
-        </td>
-      </ng-container>
+          <ng-container matColumnDef="manche2">
+            <th mat-header-cell *matHeaderCellDef>Manche 2</th>
+            <td mat-cell *matCellDef="let partie">
+              <div class="manche-cell-container">
+                <span
+                  ><span class="badge-categorie">{{ partie.listeQuestions[2].categorie }}</span
+                  >{{ partie.listeQuestions[2].question }}</span
+                  >
+                  <div class="separator"></div>
+                  <span
+                    ><span class="badge-categorie">{{ partie.listeQuestions[3].categorie }}</span
+                    >{{ partie.listeQuestions[3].question }}</span
+                    >
+                  </div>
+                </td>
+              </ng-container>
 
-      <ng-container matColumnDef="manche3">
-        <th mat-header-cell *matHeaderCellDef>Manche 3</th>
-        <td mat-cell *matCellDef="let partie">
-          <div class="manche-cell-container">
-            <span
-              ><span class="badge-categorie">{{ partie.listeQuestions[4].categorie }}</span
-              >{{ partie.listeQuestions[4].question }}</span
-            >
-            <div class="separator"></div>
-            <span
-              ><span class="badge-categorie">{{ partie.listeQuestions[5].categorie }}</span
-              >{{ partie.listeQuestions[5].question }}</span
-            >
-          </div>
-        </td>
-      </ng-container>
+              <ng-container matColumnDef="manche3">
+                <th mat-header-cell *matHeaderCellDef>Manche 3</th>
+                <td mat-cell *matCellDef="let partie">
+                  <div class="manche-cell-container">
+                    <span
+                      ><span class="badge-categorie">{{ partie.listeQuestions[4].categorie }}</span
+                      >{{ partie.listeQuestions[4].question }}</span
+                      >
+                      <div class="separator"></div>
+                      <span
+                        ><span class="badge-categorie">{{ partie.listeQuestions[5].categorie }}</span
+                        >{{ partie.listeQuestions[5].question }}</span
+                        >
+                      </div>
+                    </td>
+                  </ng-container>
 
-      <ng-container matColumnDef="manche4">
-        <th mat-header-cell *matHeaderCellDef>Manche 4</th>
-        <td mat-cell *matCellDef="let partie">
-          <div class="manche-cell-container">
-            <span
-              ><span class="badge-categorie">{{ partie.listeQuestions[6].categorie }}</span
-              >{{ partie.listeQuestions[6].question }}</span
-            >
-            <div class="separator"></div>
-            <span
-              ><span class="badge-categorie">{{ partie.listeQuestions[7].categorie }}</span
-              >{{ partie.listeQuestions[7].question }}</span
-            >
-          </div>
-        </td>
-      </ng-container>
+                  <ng-container matColumnDef="manche4">
+                    <th mat-header-cell *matHeaderCellDef>Manche 4</th>
+                    <td mat-cell *matCellDef="let partie">
+                      <div class="manche-cell-container">
+                        <span
+                          ><span class="badge-categorie">{{ partie.listeQuestions[6].categorie }}</span
+                          >{{ partie.listeQuestions[6].question }}</span
+                          >
+                          <div class="separator"></div>
+                          <span
+                            ><span class="badge-categorie">{{ partie.listeQuestions[7].categorie }}</span
+                            >{{ partie.listeQuestions[7].question }}</span
+                            >
+                          </div>
+                        </td>
+                      </ng-container>
 
-      <ng-container matColumnDef="manche5">
-        <th mat-header-cell *matHeaderCellDef>Manche 5</th>
-        <td mat-cell *matCellDef="let partie">
-          <div
-            class="manche-cell-container"
-            *ngIf="partie.listeQuestions.length > 8; else noManche"
-          >
-            <span
-              ><span class="badge-categorie">{{ partie.listeQuestions[8].categorie }}</span
-              >{{ partie.listeQuestions[8].question }}</span
-            >
-            <div class="separator"></div>
-            <span
-              ><span class="badge-categorie">{{ partie.listeQuestions[9].categorie }}</span
-              >{{ partie.listeQuestions[9].question }}</span
-            >
-          </div>
-        </td>
-      </ng-container>
+                      <ng-container matColumnDef="manche5">
+                        <th mat-header-cell *matHeaderCellDef>Manche 5</th>
+                        <td mat-cell *matCellDef="let partie">
+                          @if (partie.listeQuestions.length > 8) {
+                            <div
+                              class="manche-cell-container"
+                              >
+                              <span
+                                ><span class="badge-categorie">{{ partie.listeQuestions[8].categorie }}</span
+                                >{{ partie.listeQuestions[8].question }}</span
+                                >
+                                <div class="separator"></div>
+                                <span
+                                  ><span class="badge-categorie">{{ partie.listeQuestions[9].categorie }}</span
+                                  >{{ partie.listeQuestions[9].question }}</span
+                                  >
+                                </div>
+                              } @else {
+                                <span>-</span>
+                              }
+                            </td>
+                          </ng-container>
 
-      <ng-container matColumnDef="manche6">
-        <th mat-header-cell *matHeaderCellDef>Manche 6</th>
-        <td mat-cell *matCellDef="let partie">
-          <div
-            class="manche-cell-container"
-            *ngIf="partie.listeQuestions.length > 10; else noManche"
-          >
-            <span
-              ><span class="badge-categorie">{{ partie.listeQuestions[10].categorie }}</span
-              >{{ partie.listeQuestions[10].question }}</span
-            >
-            <div class="separator"></div>
-            <span
-              ><span class="badge-categorie">{{ partie.listeQuestions[10].categorie }}</span
-              >{{ partie.listeQuestions[10].question }}</span
-            >
-          </div>
-        </td>
-      </ng-container>
+                          <ng-container matColumnDef="manche6">
+                            <th mat-header-cell *matHeaderCellDef>Manche 6</th>
+                            <td mat-cell *matCellDef="let partie">
+                              @if (partie.listeQuestions.length > 10) {
+                                <div
+                                  class="manche-cell-container"
+                                  >
+                                  <span
+                                    ><span class="badge-categorie">{{ partie.listeQuestions[10].categorie }}</span
+                                    >{{ partie.listeQuestions[10].question }}</span
+                                    >
+                                    <div class="separator"></div>
+                                    <span
+                                      ><span class="badge-categorie">{{ partie.listeQuestions[10].categorie }}</span
+                                      >{{ partie.listeQuestions[10].question }}</span
+                                      >
+                                    </div>
+                                  } @else {
+                                    <span>-</span>
+                                  }
+                                </td>
+                              </ng-container>
 
-      <ng-container matColumnDef="mortSubite">
-        <th mat-header-cell *matHeaderCellDef>Mort Subite</th>
-        <td mat-cell *matCellDef="let partie">
-          <div class="manche-cell-container">
-            <span>{{ partie.questionMortSubite }}</span>
-          </div>
-        </td>
-      </ng-container>
+                              <ng-container matColumnDef="mortSubite">
+                                <th mat-header-cell *matHeaderCellDef>Mort Subite</th>
+                                <td mat-cell *matCellDef="let partie">
+                                  <div class="manche-cell-container">
+                                    <span>{{ partie.questionMortSubite }}</span>
+                                  </div>
+                                </td>
+                              </ng-container>
 
-      <ng-template #noManche>
-        <span>-</span>
-      </ng-template>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-    </table>
-  </div>
-</div>
+                              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                            </table>
+                          </div>
+                        </div>

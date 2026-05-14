@@ -6,6 +6,7 @@ import {
   Input,
   OnInit,
   Output,
+  signal,
 } from '@angular/core';
 import { CodeTouches } from '../../../../models/code-touches.enum';
 import { CommonModule } from '@angular/common';
@@ -22,16 +23,13 @@ export class ChronometreComponent implements OnInit {
   @Input() musique: HTMLAudioElement | null = null;
 
   @Output() onTempsEcoule = new EventEmitter<void>();
-  tempsRestant = 45;
+  tempsRestant = signal<number>(45);
   tempsTotal = 45;
 
   canChronoCanBeStarted = false;
   chrono: any;
 
-  constructor(
-    private chronoOrchestrator: ChronoOrchestrator,
-    private cdr: ChangeDetectorRef,
-  ) {}
+  constructor(private chronoOrchestrator: ChronoOrchestrator) {}
 
   ngOnInit() {
     this.chronoOrchestrator.canChronoCanBeStarted$
@@ -44,9 +42,8 @@ export class ChronometreComponent implements OnInit {
     this.chronoOrchestrator.resetChrono$
       .pipe(
         tap(() => {
-          this.tempsRestant = 45;
+          this.tempsRestant.set(this.tempsTotal);
           this.canChronoCanBeStarted = false;
-          this.cdr.detectChanges();
         }),
       )
       .subscribe();
@@ -64,9 +61,8 @@ export class ChronometreComponent implements OnInit {
     }
     this.chronoOrchestrator.sendChronoIsStarted();
     this.chrono = setInterval(() => {
-      if (this.tempsRestant >= 0) {
-        this.tempsRestant -= 0.1;
-        this.cdr.detectChanges();
+      if (this.tempsRestant() >= 0) {
+        this.tempsRestant.update((temps) => temps - 0.1);
       } else {
         this.stopperChrono();
         this.chronoOrchestrator.sendChronoIsFinished();
@@ -82,7 +78,7 @@ export class ChronometreComponent implements OnInit {
   handleKeyEvent($event: KeyboardEvent) {
     switch ($event.code) {
       case CodeTouches.spacebarCode:
-        if (this.tempsRestant > 0) this.lancerChrono();
+        if (this.tempsRestant() > 0) this.lancerChrono();
     }
 
     $event.stopPropagation();

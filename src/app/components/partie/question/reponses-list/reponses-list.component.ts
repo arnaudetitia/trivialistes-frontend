@@ -2,12 +2,14 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
+  computed,
   DestroyRef,
   HostListener,
   inject,
   Input,
   OnDestroy,
   OnInit,
+  signal,
 } from '@angular/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { ChronoOrchestrator } from '../../../../orchestrator/chrono.orchestrator';
@@ -30,12 +32,11 @@ export class ReponsesListComponent implements OnInit {
 
   @Input() set reponses(r: string[]) {
     this._reponses = r;
-    this.canContinuePartie = false;
-    this.reponseDisplay.clear();
+    this.reponseDisplay.set(new Map());
     this._reponses.forEach((rep) => {
-      this.reponseDisplay.set(rep, this.admin);
+      this.reponseDisplay().set(rep, this.admin);
     });
-    this.reponseDonnee = new Map();
+    this.reponseDonnee.set(new Map());
     this.startManche = false;
   }
 
@@ -47,9 +48,11 @@ export class ReponsesListComponent implements OnInit {
 
   startManche = false;
 
-  reponseDisplay: Map<string, boolean> = new Map();
-  reponseDonnee: Map<string, boolean> = new Map();
-  canContinuePartie = false;
+  reponseDisplay = signal<Map<string, boolean>>(new Map());
+  reponseDonnee = signal<Map<string, boolean>>(new Map());
+  canContinuePartie = computed(() => {
+    return Array.from(this.reponseDisplay()).every(([_, displayed]) => displayed);
+  });
 
   private destroyRef = inject(DestroyRef);
 
@@ -57,7 +60,6 @@ export class ReponsesListComponent implements OnInit {
     private chronoOrchestrator: ChronoOrchestrator,
     private partieOrchestrator: PartieOrchestrator,
     private equipeStore: EquipesStore,
-    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {
@@ -72,21 +74,19 @@ export class ReponsesListComponent implements OnInit {
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         tap(() => {
-          this.reponseDonnee = new Map(this.reponseDisplay);
-          const scoreManche = Array.from(this.reponseDonnee.values()).filter(
+          this.reponseDonnee.set(new Map(this.reponseDisplay()));
+          const scoreManche = Array.from(this.reponseDonnee().values()).filter(
             (reponseDonnee) => reponseDonnee === true,
           ).length;
           this.equipeStore.setScoreEquipe(scoreManche);
-          this.cdr.detectChanges();
         }),
       )
       .subscribe();
     this.partieOrchestrator.resetQuestionMortSubite$
       .pipe(
         tap(() => {
-          this.canContinuePartie = false;
-          this.reponseDisplay.clear();
-          this.reponseDonnee = new Map();
+          this.reponseDisplay.set(new Map());
+          this.reponseDonnee.set(new Map());
           this.startManche = false;
         }),
       )
@@ -97,17 +97,14 @@ export class ReponsesListComponent implements OnInit {
     if (this.admin) {
       return;
     }
-    this.reponseDisplay.set(reponse, this.startManche && true);
-    if (Array.from(this.reponseDisplay).every(([_, displayed]) => displayed)) {
-      this.canContinuePartie = true;
-    }
+    this.reponseDisplay().set(reponse, this.startManche);
   }
 
   @HostListener('window:keydown', ['$event'])
   handleKeyEvent(event$: KeyboardEvent) {
     switch (event$.code) {
       case CodeTouches.suivantCode:
-        if (this.canContinuePartie) {
+        if (this.canContinuePartie()) {
           this.partieOrchestrator.passerEtatSuivant();
         }
     }

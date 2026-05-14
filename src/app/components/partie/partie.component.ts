@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, computed, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { QuestionComponent } from './question/question.component';
 import { ChoixCategorieComponent } from './choix-categorie/choix-categorie.component';
 import { PartieStore } from '../../store/partie.store';
 import { Question } from '../../models/partie.model';
-import { map, Observable, of, tap } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 import { PartieOrchestrator } from '../../orchestrator/partie.orchestrator';
 import { ScoresComponent } from './scores/scores.component';
 import { EquipesStore } from '../../store/equipes.store';
@@ -18,13 +18,26 @@ import { EtatPartieKeys } from '../../models/etat-partie-keys.enum';
   styleUrls: ['./partie.component.scss'],
 })
 export class PartieComponent implements OnInit {
-  etatPartie: EtatPartie = EtatPartie.CHOIX_CATEGORIE;
-  indexManche = 0;
-  indexQuestion: number = 0;
-  manches$: Observable<Question[][]> = of([]);
+  etatPartie = signal<EtatPartie>(EtatPartie.CHOIX_CATEGORIE);
+  indexManche = signal<number>(0);
+  indexQuestion = signal<number>(0);
+  manches = signal<Question[][]>([]);
 
-  currentQuestion: Question | null = null;
-  otherQuestion: Question | null = null;
+  //currentQuestion: Question | null = null;
+  currentQuestion = computed(() => {
+    if (this.mortSubiteActivated) {
+      return this.questionMortSubite;
+    }
+    const manche = this.manches()[this.indexManche()];
+    return manche ? manche[this.indexQuestion()] : null;
+  });
+  otherQuestion = computed(() => {
+    if (this.mortSubiteActivated) {
+      return this.questionMortSubite;
+    }
+    const manche = this.manches()[this.indexManche()];
+    return manche ? manche[1 - this.indexQuestion()] : null;
+  });
 
   mortSubiteActivated: boolean = false;
   questionMortSubite: Question | null = null;
@@ -42,29 +55,32 @@ export class PartieComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.etatPartie =
+    this.etatPartie.set(
       getEtapePartieFromString(localStorage.getItem(EtatPartieKeys.ETAPE_PARTIE) || '') ||
-      EtatPartie.CHOIX_CATEGORIE;
-    this.manches$ = this.partieStore.getPartie().pipe(
-      map((partie) => {
-        this.questionMortSubite = partie.questionMortSubite;
-        return partie.listeQuestions.reduce((acc, currentQuestion, i) => {
-          if (i % 2 === 0) {
-            acc.push([currentQuestion, partie.listeQuestions[i + 1]]);
-          }
-          return acc;
-        }, [] as Question[][]);
-      }),
-      tap((manches) => {
-        const savedIndexManche = localStorage.getItem(EtatPartieKeys.INDEX_CURRENT_MANCHE);
-        const savedIndexQuestion = localStorage.getItem(EtatPartieKeys.INDEX_CURRENT_QUESTION);
-        if (savedIndexManche && savedIndexQuestion) {
-          this.indexManche = Number.parseInt(savedIndexManche);
-          this.indexQuestion = Number.parseInt(savedIndexQuestion);
-          this.currentQuestion = manches[this.indexManche][this.indexQuestion];
-        }
-      }),
+        EtatPartie.CHOIX_CATEGORIE,
     );
+    this.partieStore
+      .getPartie()
+      .pipe(
+        tap((partie) => {
+          this.questionMortSubite = partie.questionMortSubite;
+          this.manches.set(
+            partie.listeQuestions.reduce((acc, currentQuestion, i) => {
+              if (i % 2 === 0) {
+                acc.push([currentQuestion, partie.listeQuestions[i + 1]]);
+              }
+              return acc;
+            }, [] as Question[][]),
+          );
+          const savedIndexManche = localStorage.getItem(EtatPartieKeys.INDEX_CURRENT_MANCHE);
+          const savedIndexQuestion = localStorage.getItem(EtatPartieKeys.INDEX_CURRENT_QUESTION);
+          if (savedIndexManche && savedIndexQuestion) {
+            this.indexManche.set(Number.parseInt(savedIndexManche));
+            this.indexQuestion.set(Number.parseInt(savedIndexQuestion));
+          }
+        }),
+      )
+      .subscribe();
     this.equipeStore.equipeEnJeu$
       .pipe(
         tap((equipeEnJeu) => {
@@ -75,23 +91,23 @@ export class PartieComponent implements OnInit {
     this.partieOrchestrator.etatPartie$
       .pipe(
         tap((etat) => {
-          this.etatPartie = etat;
-          switch (this.etatPartie) {
+          this.etatPartie.set(etat);
+          switch (this.etatPartie()) {
             case EtatPartie.QUESTION_2:
               this.equipeStore.changerEquipeEnJeu();
-              if (this.indexManche === 6) {
+              if (this.indexManche() === this.manches().length) {
                 this.partieOrchestrator.resetQuestionMortSubite();
               } else {
                 this.showOtherQuestion();
               }
               break;
             case EtatPartie.CHOIX_CATEGORIE:
-              this.indexManche++;
+              this.indexManche.set(this.indexManche() + 1);
               localStorage.setItem(
                 EtatPartieKeys.INDEX_CURRENT_MANCHE,
                 this.indexManche.toString(),
               );
-              if (this.indexManche === 6) {
+              if (this.indexManche() === this.manches().length) {
                 this.showQuestionMortSubite();
                 this.partieOrchestrator.passerEtatSuivant();
               }
@@ -103,28 +119,24 @@ export class PartieComponent implements OnInit {
       .subscribe();
   }
 
-  showSelectedQuestion(manches: Question[][], indexQuestion: any) {
-    this.indexQuestion = indexQuestion;
-    this.currentQuestion = manches[this.indexManche][indexQuestion];
-    this.channel.postMessage(this.currentQuestion);
-    this.otherQuestion = manches[this.indexManche][1 - indexQuestion];
+  showSelectedQuestion(indexQuestion: any) {
+    this.indexQuestion.set(indexQuestion);
+    this.channel.postMessage(this.currentQuestion());
     this.partieOrchestrator.passerEtatSuivant();
-    localStorage.setItem(EtatPartieKeys.INDEX_CURRENT_QUESTION, this.indexQuestion.toString());
+    localStorage.setItem(EtatPartieKeys.INDEX_CURRENT_QUESTION, this.indexQuestion().toString());
   }
 
   showOtherQuestion() {
-    this.currentQuestion = this.otherQuestion;
-    this.channel.postMessage(this.currentQuestion);
+    this.indexQuestion.set(1 - this.indexQuestion());
+    this.channel.postMessage(this.currentQuestion());
     localStorage.setItem(
       EtatPartieKeys.INDEX_CURRENT_QUESTION,
-      (1 - this.indexQuestion).toString(),
+      (1 - this.indexQuestion()).toString(),
     );
   }
 
   showQuestionMortSubite() {
     this.mortSubiteActivated = true;
-    this.currentQuestion = this.questionMortSubite;
-    this.channel.postMessage(this.currentQuestion);
-    this.otherQuestion = this.questionMortSubite;
+    this.channel.postMessage(this.currentQuestion());
   }
 }

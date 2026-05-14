@@ -15,9 +15,11 @@
     <mat-form-field>
       <mat-label> Partie à jouer : </mat-label>
       <mat-select formControlName="idPartie">
-        <mat-option *ngFor="let partie of partieDescriptions" [value]="partie.id">{{
-          partie.nomPartie
-        }}</mat-option>
+        @for (partie of partieDescriptions; track partie) {
+          <mat-option [value]="partie.id">{{
+            partie.nomPartie
+          }}</mat-option>
+        }
       </mat-select>
     </mat-form-field>
   </form>

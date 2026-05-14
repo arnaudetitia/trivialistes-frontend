@@ -6,14 +6,14 @@ import {
   HostListener,
   Input,
   Output,
+  signal,
 } from '@angular/core';
 import { Question } from '../../../models/partie.model';
 import { CodeTouches } from '../../../models/code-touches.enum';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'choix-categorie',
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './choix-categorie.component.html',
   styleUrl: './choix-categorie.component.scss',
 })
@@ -22,7 +22,7 @@ export class ChoixCategorieComponent {
 
   @Output() onCategorieSelected = new EventEmitter<number>();
 
-  showCategories = false;
+  showCategories = signal<boolean>(false);
 
   jouerQuestion(index: number) {
     this.onCategorieSelected.emit(index);
@@ -32,7 +32,7 @@ export class ChoixCategorieComponent {
   handleKeyEvent($event: KeyboardEvent) {
     switch ($event.code) {
       case CodeTouches.spacebarCode:
-        this.showCategories = true;
+        this.showCategories.set(true);
     }
 
     $event.stopPropagation();

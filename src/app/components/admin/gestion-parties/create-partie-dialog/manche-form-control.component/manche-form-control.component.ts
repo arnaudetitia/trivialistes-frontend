@@ -8,7 +8,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { Categorie, Question } from '../../../../../models/partie.model';
-import { CommonModule } from '@angular/common';
+
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { QuestionService } from '../../../../../services/question.service';
@@ -23,7 +23,7 @@ import { tap } from 'rxjs';
       multi: true,
     },
   ],
-  imports: [CommonModule, MatSelectModule, MatOptionModule, ReactiveFormsModule],
+  imports: [MatSelectModule, MatOptionModule, ReactiveFormsModule],
   templateUrl: './manche-form-control.component.html',
   styleUrl: './manche-form-control.component.scss',
 })
