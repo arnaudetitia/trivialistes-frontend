@@ -4,7 +4,7 @@ import { PartieService } from '../../../services/partie.service';
 import { PartieDescription } from '../../../models/partie.model';
 import { tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { CommonModule } from '@angular/common';
+
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
@@ -12,7 +12,7 @@ import { CreatePartieDialogComponent } from './create-partie-dialog/create-parti
 
 @Component({
   selector: 'app-gestion-parties',
-  imports: [CommonModule, MatTableModule, MatButtonModule, MatIconModule],
+  imports: [MatTableModule, MatButtonModule, MatIconModule],
   templateUrl: './gestion-parties.component.html',
   styleUrl: './gestion-parties.component.scss',
 })

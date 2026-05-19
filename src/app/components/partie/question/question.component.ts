@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, Input } from '@angular/core';
+import { Component, Input, signal } from '@angular/core';
 import { ChronometreComponent } from './chronometre/chronometre.component';
 import { ReponsesListComponent } from './reponses-list/reponses-list.component';
 import { Question } from '../../../models/partie.model';
@@ -21,7 +21,7 @@ export class QuestionComponent {
   @Input() set questionSet(q: Question | null) {
     this._question = q;
     this.startTransition = false;
-    this.questionShown = this.admin;
+    this.questionShown.set(this.admin);
     this.chronoOrchestrator.resetChrono();
   }
 
@@ -40,21 +40,20 @@ export class QuestionComponent {
   @Input() admin: boolean = false;
 
   startTransition = false;
-  questionShown = false;
+  questionShown = signal<boolean>(false);
 
   constructor(
     private chronoOrchestrator: ChronoOrchestrator,
     private partieOrchestrator: PartieOrchestrator,
-    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {
-    this.questionShown = this.admin;
+    this.questionShown.set(this.admin);
     this.partieOrchestrator.resetQuestionMortSubite$
       .pipe(
         tap(() => {
           this.startTransition = false;
-          this.questionShown = this.admin;
+          this.questionShown.set(this.admin);
           this.chronoOrchestrator.resetChrono();
         }),
       )
@@ -64,8 +63,7 @@ export class QuestionComponent {
   revealQuestion() {
     this.startTransition = true;
     setTimeout(() => {
-      this.questionShown = true;
-      this.cdr.detectChanges();
+      this.questionShown.set(true);
       this.chronoOrchestrator.allowChronoToStart();
     }, 750);
   }

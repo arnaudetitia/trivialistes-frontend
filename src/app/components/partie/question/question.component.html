@@ -1,25 +1,29 @@
-<div class="question-container" *ngIf="question">
-  <div
-    class="champ-question"
-    (click)="revealQuestion()"
-    [ngClass]="{
-      'show-question': startTransition || admin,
-      'mort-subite': mortSubite,
-    }"
-  >
-    <span>{{
-      questionShown ? question.question : mortSubite ? 'MORT SUBITE' : question.categorie
-    }}</span>
-  </div>
-  <div class="interactive-container">
-    <reponses-list
-      [reponses]="question.reponses"
-      [mortSubite]="mortSubite"
-      [admin]="admin"
+@if (question) {
+  <div class="question-container">
+    <div
+      class="champ-question"
+      (click)="revealQuestion()"
       [ngClass]="{
-        'admin-display': admin,
+        'show-question': startTransition || admin,
+        'mort-subite': mortSubite,
       }"
-    ></reponses-list>
-    <chronometre [musique]="musique" *ngIf="!admin"></chronometre>
+    >
+      <span>{{
+        questionShown() ? question.question : mortSubite ? 'MORT SUBITE' : question.categorie
+      }}</span>
+    </div>
+    <div class="interactive-container">
+      <reponses-list
+        [reponses]="question.reponses"
+        [mortSubite]="mortSubite"
+        [admin]="admin"
+        [ngClass]="{
+          'admin-display': admin,
+        }"
+      ></reponses-list>
+      @if (!admin) {
+        <chronometre [musique]="musique"></chronometre>
+      }
+    </div>
   </div>
-</div>
+}

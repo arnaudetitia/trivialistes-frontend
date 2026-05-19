@@ -10,12 +10,11 @@ import { PartieService } from '../../../services/partie.service';
 import { tap } from 'rxjs';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-launch-partie',
   imports: [
-    CommonModule,
     MatButtonModule,
     MatDialogModule,
     MatFormFieldModule,
@@ -23,8 +22,8 @@ import { CommonModule } from '@angular/common';
     MatDialogTitle,
     MatSelectModule,
     MatOptionModule,
-    ReactiveFormsModule,
-  ],
+    ReactiveFormsModule
+],
   templateUrl: './launch-partie.component.html',
   styleUrl: './launch-partie.component.scss',
 })

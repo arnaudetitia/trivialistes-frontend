@@ -1,3 +1,5 @@
 <div class="reponse-admin-container">
-  <question *ngIf="currentQuestion" [questionSet]="currentQuestion" [admin]="true"></question>
+  @if (currentQuestion()) {
+    <question [questionSet]="currentQuestion()" [admin]="true"></question>
+  }
 </div>
