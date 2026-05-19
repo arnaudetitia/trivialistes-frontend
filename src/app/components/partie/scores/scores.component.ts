@@ -6,6 +6,7 @@ import { tap } from 'rxjs';
 import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { ResultatManche } from '../../../models/partie.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'scores',
@@ -25,6 +26,7 @@ export class ScoresComponent implements OnInit {
   constructor(
     private partieOrchestrator: PartieOrchestrator,
     private equipeStore: EquipesStore,
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -93,6 +95,9 @@ export class ScoresComponent implements OnInit {
   handleKeyEvent(event$: KeyboardEvent) {
     switch (event$.code) {
       case CodeTouches.suivantCode:
+        if (this.vainqueurPartie) {
+          this.router.navigate(['']);
+        }
         this.partieOrchestrator.passerEtatSuivant();
     }
 
