@@ -29,6 +29,7 @@ export class HomepageComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
+        localStorage.clear();
         this.partieStore.setIdPartie(result.idPartie);
         this.equipeStore.initEquipeScore(result.equipeA, result.equipeB);
         this.router.navigate(['partie']);
