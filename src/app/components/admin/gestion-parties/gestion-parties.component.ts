@@ -9,10 +9,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { CreatePartieDialogComponent } from './create-partie-dialog/create-partie-dialog.component';
+import { BoutonRetour } from '../../../shared/bouton-retour/bouton-retour';
 
 @Component({
   selector: 'app-gestion-parties',
-  imports: [MatTableModule, MatButtonModule, MatIconModule],
+  imports: [MatTableModule, MatButtonModule, MatIconModule, BoutonRetour],
   templateUrl: './gestion-parties.component.html',
   styleUrl: './gestion-parties.component.scss',
 })
