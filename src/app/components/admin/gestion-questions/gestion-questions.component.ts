@@ -25,7 +25,7 @@ import { CreateQuestionDialogComponent } from './create-question-dialog/create-q
 export class GestionQuestionsComponent implements OnInit {
   questionsDisplayed = signal(new MatTableDataSource<Question>([]));
 
-  displayedColumns: string[] = ['question', 'reponses'];
+  displayedColumns: string[] = ['categorie', 'question', 'reponses'];
 
   createQuestionDialog = inject(MatDialog);
 
