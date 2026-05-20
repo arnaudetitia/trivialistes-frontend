@@ -14,6 +14,10 @@ export class QuestionService {
     return this.http.get<Question[]>(environment.apiUrl + `/questions/${idCategorie}`);
   }
 
+  getAllQuestions(): Observable<Question[]> {
+    return this.http.get<Question[]>(environment.apiUrl + `/questions`);
+  }
+
   getAllMortSubites(): Observable<Question[]> {
     return this.http.get<Question[]>(environment.apiUrl + `/mort-subites`);
   }
