@@ -21,4 +21,16 @@ export class QuestionService {
   getAllMortSubites(): Observable<Question[]> {
     return this.http.get<Question[]>(environment.apiUrl + `/mort-subites`);
   }
+
+  createQuestion(
+    idCategorie: number,
+    question: string,
+    reponses: string[],
+  ): Observable<Question[]> {
+    return this.http.post<Question[]>(environment.apiUrl + `/questions`, {
+      idCategorie,
+      question,
+      reponses,
+    });
+  }
 }

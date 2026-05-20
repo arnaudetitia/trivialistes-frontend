@@ -1,0 +1,29 @@
+<div class="create-question-dialog-container">
+  <h2 mat-dialog-title>Créer une nouvelle question</h2>
+  <form [formGroup]="questionForm" mat-dialog-content>
+    <div class="question-edit-container">
+      <mat-form-field>
+        <mat-label>Catégorie</mat-label>
+        <mat-select formControlName="idCategorie">
+          @for (categorie of categories; track categorie.id) {
+            <mat-option [value]="categorie.id">{{ categorie.libelleCategorie }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <input matInput class="champ-question" formControlName="question" />
+    </div>
+    <mat-grid-list cols="2" rowHeight="10vh">
+      @for (i of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; track i) {
+        <mat-grid-tile>
+          <input matInput class="champ-reponse" formControlName="reponse{{ i }}" />
+        </mat-grid-tile>
+      }
+    </mat-grid-list>
+  </form>
+  <mat-dialog-actions align="end">
+    <button class="btn btn-cancel" mat-dialog-close>Annuler</button>
+    <button class="btn btn-primary" (click)="onCreateQuestion()" [disabled]="questionForm.invalid">
+      Créer la question
+    </button>
+  </mat-dialog-actions>
+</div>
