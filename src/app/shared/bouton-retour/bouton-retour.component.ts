@@ -6,7 +6,7 @@ import { RouterLink } from '@angular/router';
 @Component({
   selector: 'bouton-retour',
   imports: [MatButtonModule, MatIconModule, RouterLink],
-  templateUrl: './bouton-retour.html',
-  styleUrl: './bouton-retour.scss',
+  templateUrl: './bouton-retour.component.html',
+  styleUrl: './bouton-retour.component.scss',
 })
-export class BoutonRetour {}
+export class BoutonRetourComponent {}
