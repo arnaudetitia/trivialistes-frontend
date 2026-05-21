@@ -9,17 +9,29 @@
   background-color: lightgray;
   box-sizing: border-box;
 
-  button {
-    margin-top: 2vh;
-    margin-bottom: 2vh;
-    width: 15vw;
-
+  .gestion-questions-header {
     display: flex;
     flex-direction: row;
-    justify-content: center;
-    mat-icon {
-      font-weight: bold;
-      margin-right: 10px;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+
+    button {
+      width: 15vw;
+
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      mat-icon {
+        font-weight: bold;
+        margin-right: 10px;
+      }
+    }
+
+    filtrer-questions {
+      width: 30vw;
     }
   }
 

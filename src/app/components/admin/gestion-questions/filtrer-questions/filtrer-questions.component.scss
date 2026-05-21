@@ -1,0 +1,10 @@
+.filtre-question-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  .filtre-type-select {
+    width: 48%;
+    margin-right: 2%;
+  }
+}

@@ -1,9 +1,12 @@
 <div class="gestion-questions-container">
   <bouton-retour></bouton-retour>
   <h2>Gestion des questions</h2>
-  <button class="btn btn-primary" (click)="openModalCreationQuestion()">
-    <mat-icon>add</mat-icon>Créer une nouvelle question
-  </button>
+  <div class="gestion-questions-header">
+    <button class="btn btn-primary" (click)="openModalCreationQuestion()">
+      <mat-icon>add</mat-icon>Créer une nouvelle question
+    </button>
+    <filtrer-questions (onFiltreValueChange)="filterQuestions($event)"></filtrer-questions>
+  </div>
   <div class="table-wrapper">
     <table mat-table [dataSource]="questionsDisplayed()">
       <ng-container matColumnDef="categorie">

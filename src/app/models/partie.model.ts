@@ -5,6 +5,7 @@ export interface Partie {
 
 export interface Question {
   id: number;
+  idCategorie: number;
   categorie: string;
   question: string;
   reponses: string[];
@@ -25,6 +26,7 @@ export interface PartieDTO {
 
 export interface QuestionDesc {
   categorie: string;
+  idQuestion: number;
   question: string;
 }
 
