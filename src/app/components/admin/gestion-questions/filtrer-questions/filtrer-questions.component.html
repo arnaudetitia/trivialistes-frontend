@@ -1,0 +1,40 @@
+<div class="filtre-question-container">
+  <mat-form-field class="filtre-type-select">
+    <mat-label>Filter par</mat-label>
+    <mat-select (selectionChange)="registerFilterType($event.value)">
+      @for (label of FiltreTypeLabels; track label) {
+        <mat-option [value]="label">{{ label }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+  @switch (currentFiltreType()) {
+    @case (FiltreType.CATEGORIE) {
+      <mat-form-field>
+        <mat-select (selectionChange)="onFilterValueChange($event.value)">
+          @for (categorie of categorieList(); track categorie) {
+            <mat-option [value]="categorie.id">{{ categorie.libelleCategorie }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    }
+
+    @case (FiltreType.PARTIE) {
+      <mat-form-field>
+        <mat-select (selectionChange)="onFilterValueChange($event.value)">
+          @for (partie of partieList(); track partie) {
+            <mat-option [value]="partie.listeQuestions">{{ partie.nomPartie }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    }
+    @case (FiltreType.TEXTE) {
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Rechercher par texte"
+          (input)="onFilterValueChange($event.target.value)"
+        />
+      </mat-form-field>
+    }
+  }
+</div>

@@ -9,11 +9,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { CreatePartieDialogComponent } from './create-partie-dialog/create-partie-dialog.component';
-import { BoutonRetour } from '../../../shared/bouton-retour/bouton-retour';
+import { BoutonRetourComponent } from '../../../shared/bouton-retour/bouton-retour.component';
 
 @Component({
   selector: 'app-gestion-parties',
-  imports: [MatTableModule, MatButtonModule, MatIconModule, BoutonRetour],
+  imports: [MatTableModule, MatButtonModule, MatIconModule, BoutonRetourComponent],
   templateUrl: './gestion-parties.component.html',
   styleUrl: './gestion-parties.component.scss',
 })
@@ -57,11 +57,6 @@ export class GestionPartiesComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        console.log({
-          nomPartie: result.nomPartie,
-          idQuestions: result.questionManches,
-          idMortSubite: result.questionMortSubite,
-        });
         this.partieService
           .postNewPartie({
             nomPartie: result.nomPartie,

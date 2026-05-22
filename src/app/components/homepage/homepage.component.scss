@@ -10,16 +10,18 @@
   justify-content: center;
   align-items: center;
 
+  overflow-y: auto;
+
   .btn-primary {
     width: 40vw;
-    border-width: 5px;
+    border-width: 1vh;
     border-color: black;
 
-    font-size: 50px;
+    font-size: 6vh;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   }
 
-  button:first-of-type {
-    margin-bottom: 15px;
+  .btn-primary {
+    margin-bottom: 1vh;
   }
 }
