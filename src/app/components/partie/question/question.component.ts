@@ -62,5 +62,6 @@ export class QuestionComponent {
 
   revealQuestion() {
     this.questionShown.set(true);
+    this.chronoOrchestrator.allowChronoToStart();
   }
 }
