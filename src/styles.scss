@@ -3,14 +3,14 @@
 @import 'bootstrap/dist/css/bootstrap.min.css';
 @import 'assets/palette.scss';
 
-.champ-reponse,
+.cache-question,
 .champ-question,
+.cache-reponse,
+.champ-reponse,
 .champ-equipe,
 .champ-resultat,
 .champ-manche,
 .categorie-option {
-  background-color: $couleur-champ;
-  color: white;
   border: 0.5vh solid black;
 
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -18,22 +18,25 @@
   font-weight: 650;
 }
 
+.categorie-option,
+.champ-equipe,
+.cache-question,
+.cache-reponse {
+  background-color: $couleur-champ;
+  color: white;
+  transition: opacity 0.5s linear;
+}
+
+.champ-question,
+.champ-reponse {
+  background-color: white;
+  color: $couleur-champ;
+}
+
 .champ-question.mort-subite,
 .champ-reponse.mort-subite,
 .champ-manche.mort-subite {
   background-color: $couleur-mort-subite;
-}
-
-.champ-reponse {
-  transition:
-    background-color 0.5s linear,
-    color 0.5s linear;
-}
-
-.champ-question {
-  transition:
-    background-color 1.5s linear,
-    color 1.5s linear;
 }
 
 .show-reponse,

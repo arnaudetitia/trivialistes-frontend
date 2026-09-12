@@ -1,16 +1,14 @@
 @if (question) {
   <div class="question-container">
-    <div
-      class="champ-question"
-      (click)="revealQuestion()"
-      [ngClass]="{
-        'show-question': startTransition || admin,
-        'mort-subite': mortSubite,
-      }"
-    >
-      <span>{{
-        questionShown() ? question.question : mortSubite ? 'MORT SUBITE' : question.categorie
-      }}</span>
+    <div class="question-display">
+      <div class="champ-question">{{ question.question }}</div>
+      <div
+        class="cache-question"
+        [class.hidden]="questionShown() || admin"
+        (click)="revealQuestion()"
+      >
+        {{ mortSubite ? 'MORT SUBITE' : question.categorie }}
+      </div>
     </div>
     <div class="interactive-container">
       <reponses-list

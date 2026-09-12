@@ -61,10 +61,7 @@ export class QuestionComponent {
   }
 
   revealQuestion() {
-    this.startTransition = true;
-    setTimeout(() => {
-      this.questionShown.set(true);
-      this.chronoOrchestrator.allowChronoToStart();
-    }, 750);
+    this.questionShown.set(true);
+    this.chronoOrchestrator.allowChronoToStart();
   }
 }
