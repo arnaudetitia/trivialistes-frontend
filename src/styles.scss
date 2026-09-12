@@ -3,8 +3,9 @@
 @import 'bootstrap/dist/css/bootstrap.min.css';
 @import 'assets/palette.scss';
 
-.champ-question,
 .cache-question,
+.champ-question,
+.cache-reponse,
 .champ-reponse,
 .champ-equipe,
 .champ-resultat,
@@ -19,13 +20,15 @@
 
 .categorie-option,
 .champ-equipe,
-.cache-question {
+.cache-question,
+.cache-reponse {
   background-color: $couleur-champ;
   color: white;
   transition: opacity 0.5s linear;
 }
 
-.champ-question {
+.champ-question,
+.champ-reponse {
   background-color: white;
   color: $couleur-champ;
 }
@@ -34,18 +37,6 @@
 .champ-reponse.mort-subite,
 .champ-manche.mort-subite {
   background-color: $couleur-mort-subite;
-}
-
-.champ-reponse {
-  transition:
-    background-color 0.5s linear,
-    color 0.5s linear;
-}
-
-.champ-question {
-  transition:
-    background-color 1.5s linear,
-    color 1.5s linear;
 }
 
 .show-reponse,

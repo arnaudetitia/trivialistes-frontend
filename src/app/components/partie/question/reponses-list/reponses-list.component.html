@@ -1,16 +1,18 @@
 <div class="reponse-list-container">
   <mat-grid-list cols="2" gutterSize="3vh" rowHeight="12vh">
     @for (reponse of reponsesList; track reponse; let i = $index) {
-      <mat-grid-tile
-        class="champ-reponse"
-        [ngClass]="{
-          'show-reponse': reponseDisplay().get(reponse) || admin,
-          'reponse-donnee': reponseDonnee().get(reponse),
-          'mort-subite': mortSubite,
-        }"
-        (click)="revealReponses(reponse)"
-        >{{ reponseDisplay().get(reponse) || admin ? reponse : i + 1 }}</mat-grid-tile
-      >
+      <mat-grid-tile class="bloc-reponse">
+        <div class="champ-reponse" [class.reponse-donnee]="reponseDonnee().get(reponse)">
+          {{ reponse }}
+        </div>
+        <div
+          class="cache-reponse"
+          [class.hidden]="reponseDisplay().get(reponse)"
+          (click)="revealReponses(reponse)"
+        >
+          {{ i + 1 }}
+        </div>
+      </mat-grid-tile>
     }
   </mat-grid-list>
 </div>

@@ -2,11 +2,38 @@
   padding-left: 5vh;
   padding-right: 5vh;
 
-  .champ-reponse:not(.show-reponse) {
-    cursor: pointer;
+  .bloc-reponse {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
-  .reponse-donnee {
-    border: 10px solid #00ff00;
+  .champ-reponse {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+
+    &.reponse-donnee {
+      border: 10px solid #00ff00;
+    }
+  }
+
+  .cache-reponse {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    inset: 0;
+    opacity: 1;
+    cursor: pointer;
+    transition: opacity 0.5s linear;
+
+    &.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
   }
 }
