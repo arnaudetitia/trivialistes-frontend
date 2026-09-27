@@ -6,7 +6,7 @@ import { Question } from '../../../models/partie.model';
 import { ChronoOrchestrator } from '../../../orchestrator/chrono.orchestrator';
 import { PartieOrchestrator } from '../../../orchestrator/partie.orchestrator';
 import { tap } from 'rxjs';
-import { environment } from '../../../../environments/environment.dev';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'question',
