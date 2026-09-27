@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
@@ -27,6 +27,8 @@ export class GotoAdminDialogComponent {
   readonly dialogRef = inject(MatDialogRef<HomepageComponent>);
   mdpAdminForm: FormGroup;
 
+  errorFromBackend = signal<string | null>(null);
+
   constructor(
     private formBuilder: FormBuilder,
     private adminService: AdminService,
@@ -38,6 +40,8 @@ export class GotoAdminDialogComponent {
 
   connect() {
     const mdpAdmin = this.mdpAdminForm.get('mdpAdmin')?.value;
+    this.errorFromBackend.set(null);
+    this.mdpAdminForm.get('mdpAdmin')?.setErrors(null);
     this.adminService
       .connect(mdpAdmin)
       .pipe(
@@ -45,7 +49,8 @@ export class GotoAdminDialogComponent {
           this.dialogRef.close(true);
         }),
         catchError((error) => {
-          console.log(error);
+          this.mdpAdminForm.get('mdpAdmin')?.setErrors({ incorrectPassword: true });
+          this.errorFromBackend.set(error.error.error);
           return of();
         }),
       )
