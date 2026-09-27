@@ -5,6 +5,7 @@ import { LaunchPartieDialog } from './launch-partie/launch-partie.component';
 import { PartieStore } from '../../store/partie.store';
 import { Router, RouterModule } from '@angular/router';
 import { EquipesStore } from '../../store/equipes.store';
+import { GotoAdminDialogComponent } from './goto-admin-dialog/goto-admin-dialog.component';
 
 @Component({
   selector: 'app-homepage',
@@ -14,6 +15,7 @@ import { EquipesStore } from '../../store/equipes.store';
 })
 export class HomepageComponent {
   launchPartieDialog = inject(MatDialog);
+  goToAdminDialog = inject(MatDialog);
 
   constructor(
     private partieStore: PartieStore,
@@ -21,7 +23,7 @@ export class HomepageComponent {
     private router: Router,
   ) {}
 
-  openDialog() {
+  openLancerPartieDialog() {
     const dialogRef = this.launchPartieDialog.open(LaunchPartieDialog, {
       width: '750px',
       disableClose: true,
@@ -33,6 +35,20 @@ export class HomepageComponent {
         this.partieStore.setIdPartie(result.idPartie);
         this.equipeStore.initEquipeScore(result.equipeA, result.equipeB);
         this.router.navigate(['partie']);
+      }
+    });
+  }
+
+  openAdminDialog(route: string) {
+    const dialogRef = this.goToAdminDialog.open(GotoAdminDialogComponent, {
+      width: '750px',
+      disableClose: true,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        localStorage.clear();
+        this.router.navigate(['admin', route]);
       }
     });
   }

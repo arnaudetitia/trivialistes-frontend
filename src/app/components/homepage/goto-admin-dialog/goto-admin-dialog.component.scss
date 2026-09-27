@@ -1,0 +1,12 @@
+.goto-admin-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2vh;
+  width: 100%;
+
+  [matInput] {
+    width: 100%;
+  }
+}
