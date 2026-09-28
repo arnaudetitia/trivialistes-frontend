@@ -12,6 +12,21 @@
 
   overflow-y: auto;
 
+  .logo-button {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+
+    img {
+      transition: transform 3s linear;
+
+      &.rotated {
+        transform: rotate(360deg);
+      }
+    }
+  }
+
   .btn-primary {
     width: 40vw;
     border-width: 1vh;

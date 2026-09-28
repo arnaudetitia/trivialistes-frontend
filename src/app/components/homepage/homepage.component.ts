@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { LaunchPartieDialog } from './launch-partie/launch-partie.component';
@@ -14,8 +14,13 @@ import { GotoAdminDialogComponent } from './goto-admin-dialog/goto-admin-dialog.
   styleUrls: ['./homepage.component.scss'],
 })
 export class HomepageComponent {
+  logoRotation = signal(false);
   launchPartieDialog = inject(MatDialog);
   goToAdminDialog = inject(MatDialog);
+
+  toggleLogoRotation() {
+    this.logoRotation.update((rotated) => !rotated);
+  }
 
   constructor(
     private partieStore: PartieStore,
