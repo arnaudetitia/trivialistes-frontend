@@ -1,0 +1,20 @@
+<h2 mat-dialog-title>Accéder aux pages d'admin</h2>
+<mat-dialog-content>
+  <div class="goto-admin-container">
+    <form [formGroup]="mdpAdminForm">
+      <mat-form-field appearance="outline">
+        <mat-label>Renseignez le mot de passe</mat-label>
+        <input matInput formControlName="mdpAdmin" />
+        @if (errorFromBackend()) {
+          <mat-hint>{{ errorFromBackend() }}</mat-hint>
+        }
+      </mat-form-field>
+    </form>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button class="btn btn-cancel" mat-dialog-close>Annuler</button>
+  <button class="btn btn-primary" (click)="connect()" [disabled]="mdpAdminForm.invalid">
+    Accéder aux pages admin
+  </button>
+</mat-dialog-actions>

@@ -1,6 +1,19 @@
 <div class="homepage-container">
-  <img src="assets/logoTrivialistes.svg" />
-  <button class="btn btn-primary" (click)="openDialog()">Lancer une partie</button>
-  <a class="btn btn-primary" routerLink="/admin/parties">Gestion des parties</a>
-  <a class="btn btn-primary" routerLink="/admin/questions">Gestion des questions</a>
+  <button
+    class="logo-button"
+    type="button"
+    aria-label="Faire pivoter le logo"
+    (click)="toggleLogoRotation()"
+  >
+    <img
+      src="assets/logoTrivialistes.svg"
+      alt="Les Trivialistes"
+      [class.rotated]="logoRotation()"
+    />
+  </button>
+  <button class="btn btn-primary" (click)="openLancerPartieDialog()">Lancer une partie</button>
+  <button class="btn btn-primary" (click)="openAdminDialog('parties')">Gestion des parties</button>
+  <button class="btn btn-primary" (click)="openAdminDialog('questions')">
+    Gestion des questions
+  </button>
 </div>

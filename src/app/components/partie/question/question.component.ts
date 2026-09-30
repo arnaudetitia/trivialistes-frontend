@@ -6,6 +6,7 @@ import { Question } from '../../../models/partie.model';
 import { ChronoOrchestrator } from '../../../orchestrator/chrono.orchestrator';
 import { PartieOrchestrator } from '../../../orchestrator/partie.orchestrator';
 import { tap } from 'rxjs';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'question',
@@ -31,7 +32,7 @@ export class QuestionComponent {
 
   @Input() set musiqueSet(musiqueName: string) {
     if (musiqueName) {
-      this.musique = new Audio(`/assets/musiques/${musiqueName}.mp3`);
+      this.musique = new Audio(`${environment.musicFolder}/${musiqueName}.mp3`);
     }
   }
 

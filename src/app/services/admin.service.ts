@@ -1,15 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Categorie } from '../models/partie.model';
 import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
-export class CategorieService {
+export class AdminService {
   constructor(private http: HttpClient) {}
-  getAllCategories(): Observable<Categorie[]> {
-    return this.http.get<Categorie[]>(environment.apiUrl + '/categories');
+
+  connect(mdpAdmin: string) {
+    return this.http.post(`${environment.apiUrl}/admin`, {
+      mdpAdmin,
+    });
   }
 }
