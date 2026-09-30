@@ -10,6 +10,7 @@ import { ScoresComponent } from './scores/scores.component';
 import { EquipesStore } from '../../store/equipes.store';
 import { EtatPartie, getEtapePartieFromString } from '../../models/etat-partie.enum';
 import { EtatPartieKeys } from '../../models/etat-partie-keys.enum';
+import { AMBIANCE_MAP } from '../../models/ambiance-map.model';
 
 @Component({
   selector: 'app-partie',
@@ -44,7 +45,9 @@ export class PartieComponent implements OnInit {
 
   equipeEnJeu: string = '';
 
-  musiques = ['niveau1', 'niveau2', 'niveau2', 'niveau3', 'niveau3', 'niveau4', 'mortSubite'];
+  musiques = computed(() => {
+    return AMBIANCE_MAP.get(this.manches().length) ?? Array.from({ length: 6 }, () => 'mortSubite');
+  });
 
   channel = new BroadcastChannel('reponse-admin');
 

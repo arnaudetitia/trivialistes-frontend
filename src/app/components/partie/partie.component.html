@@ -15,7 +15,7 @@
     @if (etatPartie() === 'QUESTION_1' || etatPartie() === 'QUESTION_2') {
       <question
         [questionSet]="currentQuestion()"
-        [musiqueSet]="musiques[indexManche()]"
+        [musiqueSet]="musiques()[indexManche()]"
         [mortSubite]="mortSubiteActivated"
       ></question>
     }
