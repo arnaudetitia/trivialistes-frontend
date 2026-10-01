@@ -2,13 +2,18 @@
   <mat-grid-list cols="2" gutterSize="3vh" rowHeight="12vh">
     @for (reponse of reponsesList; track reponse; let i = $index) {
       <mat-grid-tile class="bloc-reponse">
-        <div class="champ-reponse" [class.reponse-donnee]="reponseDonnee().get(reponse)">
+        <div
+          class="champ-reponse"
+          [class.reponse-donnee]="reponseDonnee().get(reponse)"
+          [class.mort-subite]="mortSubite"
+        >
           {{ reponse }}
         </div>
         <div
           class="cache-reponse"
           [class.hidden]="reponseDisplay().get(reponse)"
           (click)="revealReponses(reponse)"
+          [class.mort-subite]="mortSubite"
         >
           {{ i + 1 }}
         </div>
