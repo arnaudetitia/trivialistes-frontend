@@ -33,20 +33,13 @@
   color: $couleur-champ;
 }
 
-.champ-question.mort-subite,
-.champ-reponse.mort-subite,
-.champ-manche.mort-subite {
+.cache-question.mort-subite,
+.cache-reponse.mort-subite {
   background-color: $couleur-mort-subite;
 }
 
-.show-reponse,
-.show-question {
-  background-color: white !important;
-  color: $couleur-champ !important;
-}
-
-.show-reponse.mort-subite,
-.show-question.mort-subite {
+.champ-reponse.mort-subite,
+.champ-reponse.mort-subite {
   background-color: white !important;
   color: $couleur-mort-subite !important;
 }
