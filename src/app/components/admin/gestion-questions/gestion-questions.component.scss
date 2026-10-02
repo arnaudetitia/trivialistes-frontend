@@ -1,3 +1,5 @@
+@import '../../../../assets/palette.scss';
+
 .gestion-questions-container {
   display: flex;
   flex-direction: column;
@@ -54,8 +56,12 @@
     }
 
     .champ-reponse {
-      font-size: 1.3vh;
+      font-size: 1.5vh;
       text-align: center;
+
+      &.mort-subite {
+        color: $couleur-mort-subite;
+      }
     }
   }
 }

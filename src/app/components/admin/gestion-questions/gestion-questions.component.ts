@@ -3,7 +3,7 @@ import { BoutonRetourComponent } from '../../../shared/bouton-retour/bouton-reto
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { QuestionService } from '../../../services/question.service';
 import { Question, QuestionDesc } from '../../../models/partie.model';
-import { map, tap } from 'rxjs';
+import { combineLatest, map, tap } from 'rxjs';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -12,10 +12,14 @@ import { CreateQuestionDialogComponent } from './create-question-dialog/create-q
 import { FiltrerQuestionsComponent } from './filtrer-questions/filtrer-questions.component';
 import { FiltreType } from '../../../models/filtre-type.enum';
 import { PartieService } from '../../../services/partie.service';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-gestion-questions',
   imports: [
+    MatSlideToggleModule,
+    FormsModule,
     BoutonRetourComponent,
     FiltrerQuestionsComponent,
     MatTableModule,
@@ -29,9 +33,14 @@ import { PartieService } from '../../../services/partie.service';
 export class GestionQuestionsComponent implements OnInit {
   questionsDisplayed = signal(new MatTableDataSource<Question>([]));
 
-  displayedColumns: string[] = ['categorie', 'question', 'reponses'];
+  questionsManche = signal<Question[]>([]);
+  questionsMortSubite = signal<Question[]>([]);
+
+  displayedColumns = signal<string[]>(['categorie', 'question', 'reponses']);
 
   createQuestionDialog = inject(MatDialog);
+
+  isModeMortSubite: boolean = false;
 
   constructor(
     private questionService: QuestionService,
@@ -62,11 +71,15 @@ export class GestionQuestionsComponent implements OnInit {
   }
 
   refreshQuestions() {
-    this.questionService
-      .getAllQuestions()
+    combineLatest([
+      this.questionService.getAllQuestions(),
+      this.questionService.getAllMortSubites(),
+    ])
       .pipe(
-        tap((questions) => {
-          this.questionsDisplayed().data = questions;
+        tap(([questions, mortsSubites]) => {
+          this.questionsManche.set(questions);
+          this.questionsMortSubite.set(mortsSubites);
+          this.questionsDisplayed().data = this.questionsManche();
         }),
       )
       .subscribe();
@@ -85,5 +98,15 @@ export class GestionQuestionsComponent implements OnInit {
 
   filterQuestions(filtre: { typeFiltre: FiltreType; value: string | number | QuestionDesc[] }) {
     this.questionsDisplayed().filter = JSON.stringify(filtre);
+  }
+
+  switchMode() {
+    this.questionsDisplayed().data = this.isModeMortSubite
+      ? this.questionsMortSubite()
+      : this.questionsManche();
+    this.questionsDisplayed().filter = JSON.stringify({});
+    this.displayedColumns.set(
+      this.isModeMortSubite ? ['question', 'reponses'] : ['categorie', 'question', 'reponses'],
+    );
   }
 }
