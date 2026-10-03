@@ -1,4 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, Output, signal } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  signal,
+  SimpleChanges,
+} from '@angular/core';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { FiltreType } from '../../../../models/filtre-type.enum';
@@ -19,7 +28,7 @@ import { PartieService } from '../../../../services/partie.service';
   templateUrl: './filtrer-questions.component.html',
   styleUrl: './filtrer-questions.component.scss',
 })
-export class FiltrerQuestionsComponent implements OnInit {
+export class FiltrerQuestionsComponent implements OnInit, OnChanges {
   @Input() modeMortSubite = false;
 
   FiltreType = FiltreType;
@@ -34,7 +43,7 @@ export class FiltrerQuestionsComponent implements OnInit {
 
   @Output() onFiltreValueChange = new EventEmitter<{
     typeFiltre: FiltreType;
-    value: string | number | QuestionDesc[];
+    value: string | number | PartieDescription;
   }>();
 
   constructor(
@@ -54,11 +63,20 @@ export class FiltrerQuestionsComponent implements OnInit {
       .subscribe();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (
+      changes['modeMortSubite']?.currentValue &&
+      this.currentFiltreType() === FiltreType.CATEGORIE
+    ) {
+      this.currentFiltreType.set(null);
+    }
+  }
+
   registerFilterType(value: string) {
     this.currentFiltreType.set(FiltreType[value as keyof typeof FiltreType]);
   }
 
-  onFilterValueChange(value: number | QuestionDesc[] | string) {
+  onFilterValueChange(value: number | PartieDescription | string) {
     switch (this.currentFiltreType()) {
       case FiltreType.CATEGORIE:
         this.onFiltreValueChange.emit({
@@ -69,7 +87,7 @@ export class FiltrerQuestionsComponent implements OnInit {
       case FiltreType.PARTIE:
         this.onFiltreValueChange.emit({
           typeFiltre: FiltreType.PARTIE,
-          value: value as QuestionDesc[],
+          value: value as PartieDescription,
         });
         break;
       case FiltreType.TEXTE:

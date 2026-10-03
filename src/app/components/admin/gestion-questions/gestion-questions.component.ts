@@ -2,7 +2,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { BoutonRetourComponent } from '../../../shared/bouton-retour/bouton-retour.component';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { QuestionService } from '../../../services/question.service';
-import { Question, QuestionDesc } from '../../../models/partie.model';
+import { Partie, PartieDescription, Question, QuestionDesc } from '../../../models/partie.model';
 import { combineLatest, tap } from 'rxjs';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatButtonModule } from '@angular/material/button';
@@ -53,8 +53,12 @@ export class GestionQuestionsComponent implements OnInit {
         case FiltreType.CATEGORIE:
           return question.idCategorie === filtre.value;
         case FiltreType.PARTIE:
-          const questionIds = (filtre.value as QuestionDesc[]).map((q) => q.idQuestion);
-          return questionIds.includes(Number(question.id));
+          const partieFromFiltre = filtre.value as PartieDescription;
+          const questionIds = partieFromFiltre.listeQuestions.map((q) => q.idQuestion);
+          const mortSubiteId = partieFromFiltre.idMortSubite;
+          return this.isModeMortSubite
+            ? mortSubiteId === question.id
+            : questionIds.includes(Number(question.id));
         case FiltreType.TEXTE:
           return (
             question.question.toLowerCase().includes((filtre.value as string).toLowerCase()) ||
@@ -102,7 +106,7 @@ export class GestionQuestionsComponent implements OnInit {
     });
   }
 
-  filterQuestions(filtre: { typeFiltre: FiltreType; value: string | number | QuestionDesc[] }) {
+  filterQuestions(filtre: { typeFiltre: FiltreType; value: string | number | PartieDescription }) {
     this.questionsDisplayed().filter = JSON.stringify(filtre);
   }
 
@@ -110,7 +114,7 @@ export class GestionQuestionsComponent implements OnInit {
     this.questionsDisplayed().data = this.isModeMortSubite
       ? this.questionsMortSubite()
       : this.questionsManche();
-    this.questionsDisplayed().filter = JSON.stringify({});
+    this.refreshQuestions();
     this.displayedColumns.set(
       this.isModeMortSubite ? ['question', 'reponses'] : ['categorie', 'question', 'reponses'],
     );
