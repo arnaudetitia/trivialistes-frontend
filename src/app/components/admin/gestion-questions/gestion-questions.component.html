@@ -1,11 +1,27 @@
 <div class="gestion-questions-container">
   <bouton-retour></bouton-retour>
   <h2>Gestion des questions</h2>
+  <mat-slide-toggle color="primary" [(ngModel)]="isModeMortSubite" (click)="switchMode()"
+    >Afficher les questions de mort subites</mat-slide-toggle
+  >
   <div class="gestion-questions-header">
-    <button class="btn btn-primary" (click)="openModalCreationQuestion()">
+    <button
+      class="btn"
+      [ngClass]="{
+        'btn-primary': !isModeMortSubite,
+        'btn-danger': isModeMortSubite,
+      }"
+      (click)="openModalCreationQuestion()"
+    >
       <mat-icon>add</mat-icon>Créer une nouvelle question
+      @if (isModeMortSubite) {
+        de mort subite
+      }
     </button>
-    <filtrer-questions (onFiltreValueChange)="filterQuestions($event)"></filtrer-questions>
+    <filtrer-questions
+      [modeMortSubite]="isModeMortSubite"
+      (onFiltreValueChange)="filterQuestions($event)"
+    ></filtrer-questions>
   </div>
   <div class="table-wrapper">
     <table mat-table [dataSource]="questionsDisplayed()">
@@ -21,16 +37,18 @@
       <ng-container matColumnDef="reponses">
         <th mat-header-cell *matHeaderCellDef>Réponses</th>
         <td mat-cell *matCellDef="let question">
-          <mat-grid-list cols="5" rowHeight="3vh" gutterSize="0.5vh">
+          <mat-grid-list cols="2" rowHeight="3vh" gutterSize="0.5vh">
             @for (reponse of question.reponses; track reponse) {
-              <mat-grid-tile class="champ-reponse">{{ reponse }}</mat-grid-tile>
+              <mat-grid-tile class="champ-reponse" [class.mort-subite]="isModeMortSubite">{{
+                reponse
+              }}</mat-grid-tile>
             }
           </mat-grid-list>
         </td>
       </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns(); sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns()"></tr>
     </table>
   </div>
 </div>

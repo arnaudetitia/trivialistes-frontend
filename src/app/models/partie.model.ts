@@ -15,6 +15,7 @@ export interface PartieDescription {
   id: number;
   nomPartie: string;
   listeQuestions: QuestionDesc[];
+  idMortSubite: number;
   questionMortSubite: string;
 }
 
