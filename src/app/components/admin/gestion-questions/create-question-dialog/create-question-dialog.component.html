@@ -2,20 +2,32 @@
   <h2 mat-dialog-title>Créer une nouvelle question</h2>
   <form [formGroup]="questionForm" mat-dialog-content>
     <div class="question-edit-container">
-      <mat-form-field>
-        <mat-label>Catégorie</mat-label>
-        <mat-select formControlName="idCategorie">
-          @for (categorie of categories; track categorie.id) {
-            <mat-option [value]="categorie.id">{{ categorie.libelleCategorie }}</mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-      <input matInput class="champ-question" formControlName="question" />
+      @if (!data.modeMortSubite) {
+        <mat-form-field>
+          <mat-label>Catégorie</mat-label>
+          <mat-select formControlName="idCategorie">
+            @for (categorie of categories; track categorie.id) {
+              <mat-option [value]="categorie.id">{{ categorie.libelleCategorie }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      }
+      <input
+        matInput
+        class="champ-question"
+        [class.mort-subite]="data.modeMortSubite"
+        formControlName="question"
+      />
     </div>
     <mat-grid-list cols="2" rowHeight="10vh">
       @for (i of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; track i) {
         <mat-grid-tile>
-          <input matInput class="champ-reponse" formControlName="reponse{{ i }}" />
+          <input
+            matInput
+            class="champ-reponse"
+            [class.mort-subite]="data.modeMortSubite"
+            formControlName="reponse{{ i }}"
+          />
         </mat-grid-tile>
       }
     </mat-grid-list>

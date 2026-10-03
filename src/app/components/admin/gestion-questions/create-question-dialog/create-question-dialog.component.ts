@@ -7,7 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatOptionModule } from '@angular/material/core';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatInputModule } from '@angular/material/input';
@@ -34,6 +34,7 @@ import { QuestionService } from '../../../../services/question.service';
 })
 export class CreateQuestionDialogComponent implements OnInit {
   readonly dialogRef = inject(MatDialogRef<GestionQuestionsComponent>);
+  data = inject<{ modeMortSubite: boolean }>(MAT_DIALOG_DATA);
 
   questionForm: FormGroup;
 
@@ -49,7 +50,7 @@ export class CreateQuestionDialogComponent implements OnInit {
       this.reponseFieldNamesList.push(`reponse${i}`);
     });
     this.questionForm = this.formBuilder.group({
-      idCategorie: new FormControl(null, Validators.required),
+      idCategorie: new FormControl(null, !this.data.modeMortSubite ? Validators.required : null),
       question: new FormControl('', Validators.required),
       ...this.reponseFieldNamesList.reduce(
         (acc, fieldName) => {
@@ -73,15 +74,21 @@ export class CreateQuestionDialogComponent implements OnInit {
   }
 
   onCreateQuestion() {
-    this.questionService
-      .createQuestion(
-        this.questionForm.value.idCategorie,
-        this.questionForm.value.question,
-        this.reponseFieldNamesList.map((fieldName) => this.questionForm.value[fieldName]),
-      )
+    const questionObservable = this.data.modeMortSubite
+      ? this.questionService.createMortSubite(
+          this.questionForm.value.question,
+          this.reponseFieldNamesList.map((fieldName) => this.questionForm.value[fieldName]),
+        )
+      : this.questionService.createQuestion(
+          this.questionForm.value.idCategorie,
+          this.questionForm.value.question,
+          this.reponseFieldNamesList.map((fieldName) => this.questionForm.value[fieldName]),
+        );
+
+    questionObservable
       .pipe(
         tap(() => {
-          this.dialogRef.close();
+          this.dialogRef.close(true);
         }),
         catchError((error) => {
           console.error('Error creating question:', error);

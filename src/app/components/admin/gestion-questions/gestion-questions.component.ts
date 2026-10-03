@@ -3,7 +3,7 @@ import { BoutonRetourComponent } from '../../../shared/bouton-retour/bouton-reto
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { QuestionService } from '../../../services/question.service';
 import { Question, QuestionDesc } from '../../../models/partie.model';
-import { combineLatest, map, tap } from 'rxjs';
+import { combineLatest, tap } from 'rxjs';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,13 +11,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { CreateQuestionDialogComponent } from './create-question-dialog/create-question-dialog.component';
 import { FiltrerQuestionsComponent } from './filtrer-questions/filtrer-questions.component';
 import { FiltreType } from '../../../models/filtre-type.enum';
-import { PartieService } from '../../../services/partie.service';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-gestion-questions',
   imports: [
+    CommonModule,
     MatSlideToggleModule,
     FormsModule,
     BoutonRetourComponent,
@@ -42,10 +43,7 @@ export class GestionQuestionsComponent implements OnInit {
 
   isModeMortSubite: boolean = false;
 
-  constructor(
-    private questionService: QuestionService,
-    private partieService: PartieService,
-  ) {}
+  constructor(private questionService: QuestionService) {}
 
   ngOnInit(): void {
     this.refreshQuestions();
@@ -79,7 +77,10 @@ export class GestionQuestionsComponent implements OnInit {
         tap(([questions, mortsSubites]) => {
           this.questionsManche.set(questions);
           this.questionsMortSubite.set(mortsSubites);
-          this.questionsDisplayed().data = this.questionsManche();
+
+          this.questionsDisplayed().data = this.isModeMortSubite
+            ? this.questionsMortSubite()
+            : this.questionsManche();
         }),
       )
       .subscribe();
@@ -89,10 +90,15 @@ export class GestionQuestionsComponent implements OnInit {
     const dialogRef = this.createQuestionDialog.open(CreateQuestionDialogComponent, {
       width: '75vw',
       disableClose: true,
+      data: {
+        modeMortSubite: this.isModeMortSubite,
+      },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.refreshQuestions();
+      if (result) {
+        this.refreshQuestions();
+      }
     });
   }
 
