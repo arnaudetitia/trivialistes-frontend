@@ -3,7 +3,9 @@
     <mat-label>Filter par</mat-label>
     <mat-select (selectionChange)="registerFilterType($event.value)">
       @for (label of FiltreTypeLabels; track label) {
-        <mat-option [value]="label">{{ label }}</mat-option>
+        @if (label !== 'CATEGORIE' || !modeMortSubite) {
+          <mat-option [value]="label">{{ label }}</mat-option>
+        }
       }
     </mat-select>
   </mat-form-field>

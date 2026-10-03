@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, signal } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, signal } from '@angular/core';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { FiltreType } from '../../../../models/filtre-type.enum';
@@ -20,6 +20,8 @@ import { PartieService } from '../../../../services/partie.service';
   styleUrl: './filtrer-questions.component.scss',
 })
 export class FiltrerQuestionsComponent implements OnInit {
+  @Input() modeMortSubite = false;
+
   FiltreType = FiltreType;
   FiltreTypeLabels = Object.values(FiltreType).filter(
     (value) => typeof value === 'string',

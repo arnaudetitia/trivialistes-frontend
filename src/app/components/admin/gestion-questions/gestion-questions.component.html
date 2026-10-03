@@ -5,10 +5,23 @@
     >Afficher les questions de mort subites</mat-slide-toggle
   >
   <div class="gestion-questions-header">
-    <button class="btn btn-primary" (click)="openModalCreationQuestion()">
+    <button
+      class="btn"
+      [ngClass]="{
+        'btn-primary': !isModeMortSubite,
+        'btn-danger': isModeMortSubite,
+      }"
+      (click)="openModalCreationQuestion()"
+    >
       <mat-icon>add</mat-icon>Créer une nouvelle question
+      @if (isModeMortSubite) {
+        de mort subite
+      }
     </button>
-    <filtrer-questions (onFiltreValueChange)="filterQuestions($event)"></filtrer-questions>
+    <filtrer-questions
+      [modeMortSubite]="isModeMortSubite"
+      (onFiltreValueChange)="filterQuestions($event)"
+    ></filtrer-questions>
   </div>
   <div class="table-wrapper">
     <table mat-table [dataSource]="questionsDisplayed()">

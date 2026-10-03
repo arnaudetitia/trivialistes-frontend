@@ -33,4 +33,11 @@ export class QuestionService {
       reponses,
     });
   }
+
+  createMortSubite(question: string, reponses: string[]): Observable<Question[]> {
+    return this.http.post<Question[]>(environment.apiUrl + `/mort-subites`, {
+      question,
+      reponses,
+    });
+  }
 }
