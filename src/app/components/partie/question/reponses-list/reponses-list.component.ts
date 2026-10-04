@@ -97,7 +97,9 @@ export class ReponsesListComponent implements OnInit {
     if (this.admin) {
       return;
     }
-    this.reponseDisplay().set(reponse, this.startManche);
+    this.reponseDisplay.update((display: Map<string, boolean>) =>
+      new Map(display).set(reponse, this.startManche),
+    );
   }
 
   @HostListener('window:keydown', ['$event'])
