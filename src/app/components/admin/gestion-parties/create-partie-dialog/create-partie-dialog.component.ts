@@ -55,6 +55,7 @@ export class CreatePartieDialogComponent implements OnInit {
   ) {
     this.partieForm = this.formBuilder.group({
       nomPartie: new FormControl('', Validators.required),
+      nbManchesGagnantes: new FormControl('', Validators.required),
       manche1: new FormControl('', [Validators.required, mancheValidator()]),
       manche2: new FormControl('', [Validators.required, mancheValidator()]),
       manche3: new FormControl('', [Validators.required, mancheValidator()]),
@@ -68,6 +69,27 @@ export class CreatePartieDialogComponent implements OnInit {
   ngOnInit() {
     this.allCategories$ = this.categorieService.getAllCategories();
     this.mortSubites$ = this.questionService.getAllMortSubites();
+  }
+
+  onNbMancheGagnantesChanged($event: any) {
+    if ($event.value) {
+      this.partieForm.removeControl('manche5');
+      this.partieForm.removeControl('manche6');
+    } else {
+      this.partieForm.addControl(
+        'manche5',
+        new FormControl('', [Validators.required, mancheValidator()]),
+      );
+      this.partieForm.addControl(
+        'manche6',
+        new FormControl('', [Validators.required, mancheValidator()]),
+      );
+    }
+
+    this.mancheFormNames = Array.from(
+      { length: 2 * (($event.value as number) - 1) },
+      (_, i) => i + 1,
+    ).map((index) => `manche${index}`);
   }
 
   createPartie() {

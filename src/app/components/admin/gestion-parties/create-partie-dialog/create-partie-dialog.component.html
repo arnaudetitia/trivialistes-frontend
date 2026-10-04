@@ -1,11 +1,21 @@
 <h2 mat-dialog-title>Créer une nouvelle partie</h2>
 @if ({ allCategories: allCategories$ | async, mortSubites: mortSubites$ | async }; as data) {
-  <mat-dialog-content
-    >
+  <mat-dialog-content>
     <form [formGroup]="partieForm">
       <mat-form-field>
         <mat-label>Nom de la partie</mat-label>
         <input matInput formControlName="nomPartie" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Nombre de manches gagnantes</mat-label>
+        <mat-select
+          formControlName="nbManchesGagnantes"
+          (selectionChange)="onNbMancheGagnantesChanged($event)"
+        >
+          @for (nbManches of [3, 4]; track nbManches) {
+            <mat-option [value]="nbManches">Partie en {{ nbManches }} manches gagnantes</mat-option>
+          }
+        </mat-select>
       </mat-form-field>
       @for (formName of mancheFormNames; track formName; let i = $index) {
         <manche-form-control
@@ -18,9 +28,7 @@
         <mat-label>Mort Subite</mat-label>
         <mat-select formControlName="mortSubite">
           @for (ms of data.mortSubites; track ms) {
-            <mat-option [value]="ms.id">{{
-              ms.question
-            }}</mat-option>
+            <mat-option [value]="ms.id">{{ ms.question }}</mat-option>
           }
         </mat-select>
       </mat-form-field>
