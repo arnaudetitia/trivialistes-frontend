@@ -1,12 +1,13 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, signal } from '@angular/core';
 import { PartieOrchestrator } from '../../../orchestrator/partie.orchestrator';
 import { CodeTouches } from '../../../models/code-touches.enum';
 import { EquipesStore } from '../../../store/equipes.store';
-import { tap } from 'rxjs';
+import { combineLatest, tap } from 'rxjs';
 import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { ResultatManche } from '../../../models/partie.model';
 import { Router } from '@angular/router';
+import { PartieStore } from '../../../store/partie.store';
 
 @Component({
   selector: 'scores',
@@ -15,7 +16,8 @@ import { Router } from '@angular/router';
   styleUrl: './scores.component.scss',
 })
 export class ScoresComponent implements OnInit {
-  resultatManches: ResultatManche[] = [];
+  nbManches: number = 0;
+  resultatManches = signal<ResultatManche[]>([]);
   scoreGlobal: Map<string, number> = new Map();
 
   nomEquipes: string[] = [];
@@ -26,14 +28,14 @@ export class ScoresComponent implements OnInit {
   constructor(
     private partieOrchestrator: PartieOrchestrator,
     private equipeStore: EquipesStore,
+    private partieStore: PartieStore,
     private router: Router,
   ) {}
 
   ngOnInit() {
-    this.equipeStore
-      .getScores()
+    combineLatest([this.equipeStore.getScores(), this.partieStore.getPartie()])
       .pipe(
-        tap((scores) => {
+        tap(([scores, partie]) => {
           //Debut Mock Scores
           //let mockScores = new Map<string, number[]>();
           //mockScores.set('Equipe 1', [4, 5, 8, 8, 5, 5]);
@@ -41,46 +43,51 @@ export class ScoresComponent implements OnInit {
 
           //scores = mockScores;
           //Fin Mock Scores
+          this.nbManches = partie.listeQuestions.length / 2;
 
           this.nomEquipes = Array.from(scores.keys());
-
           const scoresA = scores.get(this.nomEquipes[0]) || [];
           const scoresB = scores.get(this.nomEquipes[1]) || [];
 
           for (let i = 0; i < scoresA.length; i++) {
-            this.resultatManches.push({
-              numeroManche: i + 1,
-              scoreEquipeA: scoresA[i],
-              scoreEquipeB: scoresB[i],
-              equipeChoix: i < 6 ? this.nomEquipes[i % 2] : null,
-              mortsubite: i === 6,
-            } as ResultatManche);
+            this.resultatManches.update((resmanches) => [
+              ...resmanches,
+              {
+                numeroManche: i + 1,
+                scoreEquipeA: scoresA[i],
+                scoreEquipeB: scoresB[i],
+                equipeChoix: i < this.nbManches ? this.nomEquipes[i % 2] : null,
+                mortsubite: i === this.nbManches,
+              } as ResultatManche,
+            ]);
           }
 
-          this.resultatManches = this.resultatManches.map((res) => {
-            let equipeWin: string;
-            if (res.scoreEquipeA > res.scoreEquipeB) {
-              equipeWin = this.nomEquipes[0];
-            } else if (res.scoreEquipeA < res.scoreEquipeB) {
-              equipeWin = this.nomEquipes[1];
-            } else {
-              equipeWin =
-                this.nomEquipes.find((nom) => nom.localeCompare(res.equipeChoix) !== 0) || '';
-            }
-            return {
-              ...res,
-              vainqueurManche: equipeWin,
-            };
-          });
+          this.resultatManches.set(
+            this.resultatManches().map((res) => {
+              let equipeWin: string;
+              if (res.scoreEquipeA > res.scoreEquipeB) {
+                equipeWin = this.nomEquipes[0];
+              } else if (res.scoreEquipeA < res.scoreEquipeB) {
+                equipeWin = this.nomEquipes[1];
+              } else {
+                equipeWin =
+                  this.nomEquipes.find((nom) => nom.localeCompare(res.equipeChoix) !== 0) || '';
+              }
+              return {
+                ...res,
+                vainqueurManche: equipeWin,
+              };
+            }),
+          );
 
-          this.scoreGlobal = this.resultatManches.reduce((acc, res) => {
+          this.scoreGlobal = this.resultatManches().reduce((acc, res) => {
             let nbMancheGagne = acc.get(res.vainqueurManche) || 0;
             acc.set(res.vainqueurManche, nbMancheGagne + 1);
             return acc;
           }, new Map());
 
           const scoreGagnantPartie = Array.from(this.scoreGlobal.entries()).find(
-            ([equipe, nbMancheGagne]) => nbMancheGagne >= 4,
+            ([equipe, nbMancheGagne]) => nbMancheGagne >= this.nbManches / 2 + 1,
           );
           if (scoreGagnantPartie) {
             this.vainqueurPartie = scoreGagnantPartie[0];
