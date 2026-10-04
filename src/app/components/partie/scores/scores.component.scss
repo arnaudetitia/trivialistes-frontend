@@ -42,11 +42,9 @@
       .gagnant-manche {
         background-color: $couleur-champ;
         color: white;
-      }
 
-      tr:nth-of-type(7) {
-        .gagnant-manche {
-          background-color: red;
+        &.mort-subite {
+          background-color: $couleur-mort-subite;
         }
       }
     }
