@@ -1,3 +1,5 @@
+@use '@angular/material' as mat;
+
 .reponse-list-container {
   padding-left: 5vh;
   padding-right: 5vh;
@@ -35,5 +37,24 @@
       opacity: 0;
       pointer-events: none;
     }
+  }
+
+  mat-slide-toggle {
+    margin-left: 0.25vw;
+  }
+
+  .green-toggle {
+    @include mat.slide-toggle-overrides(
+      (
+        selected-track-color: #00ff00,
+        selected-hover-track-color: #00ff00,
+        selected-focus-track-color: #00ff00,
+        selected-pressed-track-color: #00ff00,
+        selected-handle-color: #00ff00,
+        selected-hover-handle-color: #00ff00,
+        selected-focus-handle-color: #00ff00,
+        selected-pressed-handle-color: #00ff00,
+      )
+    );
   }
 }

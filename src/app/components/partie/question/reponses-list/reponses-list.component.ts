@@ -18,10 +18,11 @@ import { CodeTouches } from '../../../../models/code-touches.enum';
 import { PartieOrchestrator } from '../../../../orchestrator/partie.orchestrator';
 import { EquipesStore } from '../../../../store/equipes.store';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'reponses-list',
-  imports: [CommonModule, MatGridListModule],
+  imports: [CommonModule, MatSlideToggleModule, MatGridListModule],
   templateUrl: './reponses-list.component.html',
   styleUrl: './reponses-list.component.scss',
 })
@@ -37,6 +38,8 @@ export class ReponsesListComponent implements OnInit {
       this.reponseDisplay().set(rep, this.admin);
     });
     this.reponseDonnee.set(new Map());
+    this.modeRattrapage.set(false);
+    this.enableRattrapage.set(false);
     this.startManche = false;
   }
 
@@ -44,12 +47,16 @@ export class ReponsesListComponent implements OnInit {
     return this._reponses;
   }
 
+  enableRattrapage = signal<boolean>(false);
+  modeRattrapage = signal<boolean>(false);
+
   @Input() mortSubite: boolean = false;
 
   startManche = false;
 
   reponseDisplay = signal<Map<string, boolean>>(new Map());
   reponseDonnee = signal<Map<string, boolean>>(new Map());
+  reponseARattraper = signal<Map<string, boolean>>(new Map());
   canContinuePartie = computed(() => {
     return Array.from(this.reponseDisplay()).every(([_, displayed]) => displayed);
   });
@@ -74,11 +81,13 @@ export class ReponsesListComponent implements OnInit {
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         tap(() => {
+          this.enableRattrapage.set(true);
           this.reponseDonnee.set(new Map(this.reponseDisplay()));
-          const scoreManche = Array.from(this.reponseDonnee().values()).filter(
-            (reponseDonnee) => reponseDonnee === true,
-          ).length;
-          this.equipeStore.setScoreEquipe(scoreManche);
+          const reponsesARattraper = new Map(this.reponseDonnee());
+          reponsesARattraper.forEach((value, reponse) => {
+            reponsesARattraper.set(reponse, !value);
+          });
+          this.reponseARattraper.set(reponsesARattraper);
         }),
       )
       .subscribe();
@@ -102,13 +111,25 @@ export class ReponsesListComponent implements OnInit {
     );
   }
 
+  rattraperReponse(event: MatSlideToggleChange, reponse: string) {
+    this.reponseDonnee.update((reponses) => new Map(reponses).set(reponse, event.checked));
+  }
+
   @HostListener('window:keydown', ['$event'])
   handleKeyEvent(event$: KeyboardEvent) {
     switch (event$.code) {
       case CodeTouches.suivantCode:
-        if (this.canContinuePartie()) {
+        if (this.canContinuePartie() && !this.modeRattrapage()) {
+          const scoreManche = Array.from(this.reponseDonnee().values()).filter(
+            (reponseDonnee) => reponseDonnee === true,
+          ).length;
+          this.equipeStore.setScoreEquipe(scoreManche);
           this.partieOrchestrator.passerEtatSuivant();
         }
+        break;
+      case CodeTouches.rattrapagePoints:
+        this.modeRattrapage.update((value) => this.enableRattrapage() && !value);
+        break;
     }
 
     event$.stopPropagation();
