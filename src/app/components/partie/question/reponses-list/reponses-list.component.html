@@ -9,6 +9,15 @@
         >
           {{ reponse }}
         </div>
+        @if (modeRattrapage()) {
+          <mat-slide-toggle
+            class="green-toggle"
+            [checked]="reponseDonnee().get(reponse)"
+            [disabled]="!reponseARattraper().get(reponse)"
+            (change)="rattraperReponse($event, reponse)"
+            >Accepter réponse</mat-slide-toggle
+          >
+        }
         <div
           class="cache-reponse"
           [class.hidden]="reponseDisplay().get(reponse)"
