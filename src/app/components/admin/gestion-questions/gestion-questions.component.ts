@@ -14,6 +14,8 @@ import { FiltreType } from '../../../models/filtre-type.enum';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { MatMenuModule } from '@angular/material/menu';
+import { ImportQuestionsDialog } from './import-questions/import-questions-dialog.component';
 
 @Component({
   selector: 'app-gestion-questions',
@@ -26,6 +28,7 @@ import { CommonModule } from '@angular/common';
     MatTableModule,
     MatGridListModule,
     MatButtonModule,
+    MatMenuModule,
     MatIconModule,
   ],
   templateUrl: './gestion-questions.component.html',
@@ -92,6 +95,22 @@ export class GestionQuestionsComponent implements OnInit {
 
   openModalCreationQuestion() {
     const dialogRef = this.createQuestionDialog.open(CreateQuestionDialogComponent, {
+      width: '75vw',
+      disableClose: true,
+      data: {
+        modeMortSubite: this.isModeMortSubite,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.refreshQuestions();
+      }
+    });
+  }
+
+  openModalImportQuestion() {
+    const dialogRef = this.createQuestionDialog.open(ImportQuestionsDialog, {
       width: '75vw',
       disableClose: true,
       data: {
