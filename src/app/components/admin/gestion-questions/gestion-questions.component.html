@@ -11,13 +11,17 @@
         'btn-primary': !isModeMortSubite,
         'btn-danger': isModeMortSubite,
       }"
-      (click)="openModalCreationQuestion()"
+      [matMenuTriggerFor]="newQuestionsMenu"
     >
       <mat-icon>add</mat-icon>Créer une nouvelle question
       @if (isModeMortSubite) {
         de mort subite
       }
     </button>
+    <mat-menu #newQuestionsMenu>
+      <button mat-menu-item (click)="openModalCreationQuestion()">Unitairement</button>
+      <button mat-menu-item (click)="openModalImportQuestion()">Par Import de fichier</button>
+    </mat-menu>
     <filtrer-questions
       [modeMortSubite]="isModeMortSubite"
       (onFiltreValueChange)="filterQuestions($event)"
