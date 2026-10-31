@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { Question } from '../models/partie.model';
+import { ImportError } from '../models/import-error.model';
 
 @Injectable({
   providedIn: 'root',
@@ -39,5 +40,53 @@ export class QuestionService {
       question,
       reponses,
     });
+  }
+
+  checkImportQuestions(
+    csvFileContent: any,
+  ): Observable<{ erreurs: ImportError[]; questions: Question[] }> {
+    return this.http.post<{ erreurs: ImportError[]; questions: Question[] }>(
+      environment.apiUrl + '/import/questions',
+      {
+        csvFileContent,
+        doImport: false,
+      },
+    );
+  }
+
+  importQuestions(
+    csvFileContent: any,
+  ): Observable<{ erreurs: ImportError[]; questions: Question[] }> {
+    return this.http.post<{ erreurs: ImportError[]; questions: Question[] }>(
+      environment.apiUrl + '/import/questions',
+      {
+        csvFileContent,
+        doImport: true,
+      },
+    );
+  }
+
+  checkImportMortSubites(
+    csvFileContent: any,
+  ): Observable<{ erreurs: ImportError[]; questions: Question[] }> {
+    return this.http.post<{ erreurs: ImportError[]; questions: Question[] }>(
+      environment.apiUrl + '/import/mort-subites',
+      {
+        csvFileContent,
+        doImport: false,
+      },
+    );
+  }
+
+  importMortSubites(
+    csvFileContent: any,
+  ): Observable<{ erreurs: ImportError[]; questions: Question[] }> {
+    return this.http.post<{ erreurs: ImportError[]; questions: Question[] }>(
+      environment.apiUrl + '/import/mort-subites',
+      {
+        csvFileContent,
+        doImport: true,
+      },
+    );
   }
 }
