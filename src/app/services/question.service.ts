@@ -65,4 +65,28 @@ export class QuestionService {
       },
     );
   }
+
+  checkImportMortSubites(
+    csvFileContent: any,
+  ): Observable<{ erreurs: ImportError[]; questions: Question[] }> {
+    return this.http.post<{ erreurs: ImportError[]; questions: Question[] }>(
+      environment.apiUrl + '/import/mort-subites',
+      {
+        csvFileContent,
+        doImport: false,
+      },
+    );
+  }
+
+  importMortSubites(
+    csvFileContent: any,
+  ): Observable<{ erreurs: ImportError[]; questions: Question[] }> {
+    return this.http.post<{ erreurs: ImportError[]; questions: Question[] }>(
+      environment.apiUrl + '/import/mort-subites',
+      {
+        csvFileContent,
+        doImport: true,
+      },
+    );
+  }
 }

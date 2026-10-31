@@ -49,8 +49,10 @@ export class ImportQuestionsDialog {
 
   checkImportQuestion() {
     this.isChecking.set(true);
-    this.questionService
-      .checkImportQuestions(this.csvFileContent())
+    const importObservable = this.data.modeMortSubite
+      ? this.questionService.checkImportMortSubites(this.csvFileContent())
+      : this.questionService.checkImportQuestions(this.csvFileContent());
+    importObservable
       .pipe(
         tap((reponse: { erreurs: ImportError[]; questions: Question[] }) => {
           this.isChecking.set(false);
@@ -63,8 +65,10 @@ export class ImportQuestionsDialog {
 
   importQuestions() {
     this.isChecking.set(true);
-    this.questionService
-      .importQuestions(this.csvFileContent())
+    const importObservable = this.data.modeMortSubite
+      ? this.questionService.importMortSubites(this.csvFileContent())
+      : this.questionService.importQuestions(this.csvFileContent());
+    importObservable
       .pipe(
         tap((reponse: { erreurs: ImportError[]; questions: Question[] }) => {
           this.isChecking.set(false);

@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Importer un fichier CSV</h2>
+<h2 mat-dialog-title>Importer un fichier CSV {{ data.modeMortSubite ? '(Morts Subites)' : '' }}</h2>
 <mat-dialog-content class="import-questions-container">
   <div class="file-selector">
     <input
@@ -8,12 +8,25 @@
       accept=".csv"
       (change)="onFileSelected($event)"
     />
-    <button class="btn champ fichier" (click)="fileInput.click()">
+    <button
+      class="btn champ fichier"
+      (click)="fileInput.click()"
+      [ngClass]="{
+        'mort-subite': data.modeMortSubite,
+      }"
+    >
       <mat-icon>file</mat-icon>
       Choisir...
     </button>
     @if (fileName()) {
-      <div class="champ file-name-display">{{ fileName() }}</div>
+      <div
+        class="champ file-name-display"
+        [ngClass]="{
+          'mort-subite': data.modeMortSubite,
+        }"
+      >
+        {{ fileName() }}
+      </div>
     }
   </div>
   @if (isChecking()) {
@@ -51,6 +64,9 @@
     class="btn champ checker"
     (click)="checkImportQuestion()"
     [disabled]="csvFileContent() === null"
+    [ngClass]="{
+      'mort-subite': data.modeMortSubite,
+    }"
   >
     Vérifier le fichier
   </button>
@@ -58,6 +74,9 @@
     class="btn champ importer"
     (click)="importQuestions()"
     [disabled]="!checkDone() || errorsImport().length"
+    [ngClass]="{
+      'mort-subite': data.modeMortSubite,
+    }"
   >
     Importer le fichier
   </button>
