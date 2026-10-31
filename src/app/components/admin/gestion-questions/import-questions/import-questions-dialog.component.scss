@@ -21,6 +21,10 @@
     font-size: 1vw;
     border: 5px solid black;
     background-color: $couleur-champ;
+
+    &.mort-subite:hover {
+      background-color: $couleur-mort-subite !important;
+    }
   }
 }
 
@@ -107,5 +111,13 @@ table {
   td {
     border: 0.2vh solid black;
     padding: 0.2vh;
+  }
+}
+
+.mort-subite {
+  background-color: $couleur-mort-subite !important;
+
+  &:hover {
+    background-color: $couleur-mort-subite-foncee !important;
   }
 }
